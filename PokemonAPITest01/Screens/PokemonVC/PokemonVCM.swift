@@ -23,6 +23,8 @@ class PokemonVCM: ViewModel {
 	
 	private let screenState: BehaviorSubject<PokemonVCState> = BehaviorSubject(value: .loading)
 	var navigateToSinglePokemonCallback: ((_ responseUrl: String)->Void)?
+	
+	private var pokemonHolders: [BaseViewHolderModel] = []
 
 	func screenStateObservable() -> Observable<PokemonVCState> {
 		return screenState.asObservable()
@@ -35,22 +37,22 @@ class PokemonVCM: ViewModel {
 	
 	func populateHolderModels() {
 		
-				apiManager
-					.decodeEndpoint(
-						endpointURL: Const.getPokemonEnpoint,
-						responseEntityType: GetPokemonEntity.self,
-						onDecodedCallback: { listOfPokemon in
-		
-					let displayPokemon = listOfPokemon.results.map { resultsObject in
-								SingleLabelVHM(labelText: resultsObject.name, onViewTapped: {
-									self.navigateToSinglePokemonCallback?(resultsObject.url)
-								})
-							}
-							
-							self.screenState.onNext(.success(holderModels: displayPokemon))
-		
-//							self.holderModelState.onNext(displayPokemon)
-				})
+//				apiManager
+//					.decodeEndpoint(
+//						endpointURL: Const.getPokemonEnpoint,
+//						responseEntityType: GetPokemonEntity.self,
+//						onDecodedCallback: { listOfPokemon in
+//
+//					let displayPokemon = listOfPokemon.results.map { resultsObject in
+//								SingleLabelVHM(labelText: resultsObject.name, onViewTapped: {
+//									self.navigateToSinglePokemonCallback?(resultsObject.url)
+//								})
+//							}
+//
+//							self.screenState.onNext(.success(holderModels: displayPokemon))
+//
+////							self.holderModelState.onNext(displayPokemon)
+//				})
 		
 //		apiManager
 //			.decodeEndpointObservable(
@@ -60,12 +62,11 @@ class PokemonVCM: ViewModel {
 //			.subscribe { listOfPokemon in
 //				let displayPokemon = listOfPokemon.results.map { resultsObject in
 //					SingleLabelVHM(labelText: resultsObject.name, onViewTapped: {
-//						print("----VIEW TAPPED---")
+//						self.navigateToSinglePokemonCallback?(resultsObject.url)
 //					})
 //				}
 //
-//
-//				self.holderModelState.onNext(displayPokemon)
+//				self.screenState.onNext(.success(holderModels: displayPokemon))
 //			} onError: { error in
 //				print(error)
 //			} onCompleted: {
@@ -74,8 +75,63 @@ class PokemonVCM: ViewModel {
 //
 //			}
 		
-
+		print("OBSERVABLE CHAIN BEGIN")
 		
+		apiManager
+			.decodeEndpointObservable(
+				endpointURL: Const.getPokemonEnpoint,
+				responseEntityType: GetPokemonEntity.self
+			)
+			.flatMap { (getPokemonResponseEntity) in
+				
+				
+				return Observable.from(getPokemonResponseEntity.results) //breaks array into array of indy observables
+			}
+			.flatMap { (resultsObject: resultsObject) -> Observable<PokemonTopLevelEntity> in
+				 return self.apiManager.decodeEndpointObservable(endpointURL: resultsObject.url, responseEntityType: PokemonTopLevelEntity.self)
+			}
+			.flatMap { (pokemonTopLevelEntity) -> Observable<SinglePokemonInfoVHM> in
+
+				
+				let singlePokeInfo = SinglePokemonInfoVHM(
+					imageURLString: pokemonTopLevelEntity.sprites.front_default!,
+					pokemonName: pokemonTopLevelEntity.name!,
+					pokemonIdNumber: pokemonTopLevelEntity.id!
+				)
+
+				return Observable.just(singlePokeInfo)
+			}
+			.subscribe { (vModel: BaseViewHolderModel) in
+				self.pokemonHolders.append(vModel)
+				self.screenState.onNext(.success(holderModels: self.pokemonHolders))
+			}
 		
 	}
+	
+//	func generateHolderModels() -> Observable<[SinglePokemonInfoVHM]> {
+//		return apiManager
+//			.decodeEndpointObservable(
+//				endpointURL: Const.getPokemonEnpoint,
+//				responseEntityType: GetPokemonEntity.self
+//			)
+//			.flatMap { (getPokemonResponseEntity) in
+//				Observable.from(getPokemonResponseEntity.results)
+//			}
+//			.flatMap { (resultsObject) -> Observable<PokemonTopLevelEntity> in
+//				 return self.apiManager.decodeEndpointObservable(endpointURL: resultsObject.url, responseEntityType: PokemonTopLevelEntity.self)
+//			}
+//			.flatMap { (pokemonTopLevelEntity: PokemonTopLevelEntity) -> Observable<SinglePokemonInfoVHM> in
+//
+//				let singlePokeInfo = SinglePokemonInfoVHM(
+//					imageURLString: pokemonTopLevelEntity.sprites.front_default!,
+//					pokemonName: pokemonTopLevelEntity.name!,
+//					pokemonIdNumber: pokemonTopLevelEntity.id!
+//				)
+//
+//				return Observable.from(singlePokeInfo)
+//			}
+//
+//	}
+	
+	
 }

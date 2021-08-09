@@ -10,6 +10,8 @@ import RxSwift
 
 class APIManager {
 	
+	let shared = APIManager()
+	
 	func decodeEndpoint<T:Decodable>(
 		endpointURL:String,
 		responseEntityType: T.Type,
