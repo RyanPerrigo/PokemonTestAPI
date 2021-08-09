@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--MainVC-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" customClass="MainVC" customModule="PokemonAPITest01" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NKP-fJ-RsX" customClass="DynamicCollectionView" customModule="PokemonAPITest01" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44" width="414" height="690"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="45s-aM-txn">
+                                <rect key="frame" x="0.0" y="734" width="414" height="128"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bav-os-rom">
+                                        <rect key="frame" x="184" y="49" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="3zl-ay-Z7f"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="45s-aM-txn" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="LKP-tZ-Ohd"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="NKP-fJ-RsX" secondAttribute="trailing" id="YWo-te-G65"/>
+                            <constraint firstItem="NKP-fJ-RsX" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="YlL-qQ-7gC"/>
+                            <constraint firstItem="NKP-fJ-RsX" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="fAz-eW-rnN"/>
+                            <constraint firstItem="45s-aM-txn" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="fqz-bH-ue8"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="45s-aM-txn" secondAttribute="trailing" id="vNJ-du-IJJ"/>
+                            <constraint firstItem="45s-aM-txn" firstAttribute="top" secondItem="NKP-fJ-RsX" secondAttribute="bottom" id="wow-9K-tyt"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dynamicCollectionView" destination="NKP-fJ-RsX" id="lwr-pM-m4y"/>
+                        <outlet property="searchButton" destination="Bav-os-rom" id="6Ft-BO-xBd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="95.652173913043484" y="88.392857142857139"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

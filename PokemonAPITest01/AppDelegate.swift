@@ -7,13 +7,26 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+	
+	var window: UIWindow?
 
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+		
+		let navController:UINavigationController = UINavigationController()
+		navController.navigationItem.standardAppearance?.backgroundColor = .clear
+		let coordinator: MainCoordinator = MainCoordinator(navigationController: navController)
+		let window = UIWindow(frame: UIScreen.main.bounds)
+		window.rootViewController = navController
+		window.makeKeyAndVisible()
+		self.window = window
+		
+		coordinator.eventOccured(with: AppLevelCoordinatingEvents.appStart)
+		//FirebaseApp.configure()
 		// Override point for customization after application launch.
 		return true
 	}

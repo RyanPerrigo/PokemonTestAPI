@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="WelcomeScreenVH" customModule="PokemonAPITest01" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="225" height="155"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="225" height="155"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2hu-R5-x6J">
+                        <rect key="frame" x="5" y="5" width="215" height="145"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5XJ-xa-g04">
+                                <rect key="frame" x="72" y="25" width="71" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O8x-tm-vCi">
+                                <rect key="frame" x="30" y="62" width="19" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pokemon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tuU-yW-ITp">
+                                <rect key="frame" x="124" y="62" width="71" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quizzlet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tEh-Rw-IFB">
+                                <rect key="frame" x="76" y="99" width="63" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="tuU-yW-ITp" secondAttribute="trailing" constant="20" id="BjJ-vB-L9g"/>
+                            <constraint firstItem="tuU-yW-ITp" firstAttribute="centerY" secondItem="2hu-R5-x6J" secondAttribute="centerY" id="Gmp-0u-TL6"/>
+                            <constraint firstItem="tEh-Rw-IFB" firstAttribute="centerX" secondItem="2hu-R5-x6J" secondAttribute="centerX" id="L24-wQ-H35"/>
+                            <constraint firstItem="5XJ-xa-g04" firstAttribute="top" secondItem="2hu-R5-x6J" secondAttribute="top" constant="25" id="Ywf-yB-VC9"/>
+                            <constraint firstItem="O8x-tm-vCi" firstAttribute="centerY" secondItem="2hu-R5-x6J" secondAttribute="centerY" id="jZH-g9-Bv6"/>
+                            <constraint firstAttribute="bottom" secondItem="tEh-Rw-IFB" secondAttribute="bottom" constant="25" id="krP-6C-hBb"/>
+                            <constraint firstItem="O8x-tm-vCi" firstAttribute="leading" secondItem="2hu-R5-x6J" secondAttribute="leading" constant="30" id="n12-nU-hlp"/>
+                            <constraint firstItem="5XJ-xa-g04" firstAttribute="centerX" secondItem="2hu-R5-x6J" secondAttribute="centerX" id="qJg-ae-702"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="2hu-R5-x6J" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="DGM-9k-Hv4"/>
+                <constraint firstItem="2hu-R5-x6J" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="HfK-ov-eRt"/>
+                <constraint firstAttribute="bottom" secondItem="2hu-R5-x6J" secondAttribute="bottom" constant="5" id="WxU-Wc-eYv"/>
+                <constraint firstAttribute="trailing" secondItem="2hu-R5-x6J" secondAttribute="trailing" constant="5" id="vf4-P4-4SX"/>
+            </constraints>
+            <size key="customSize" width="225" height="155"/>
+            <connections>
+                <outlet property="topLevelView" destination="2hu-R5-x6J" id="p6d-K5-4ra"/>
+            </connections>
+            <point key="canvasLocation" x="154.34782608695653" y="114.84375"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

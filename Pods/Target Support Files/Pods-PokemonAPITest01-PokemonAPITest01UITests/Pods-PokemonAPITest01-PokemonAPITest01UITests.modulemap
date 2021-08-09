@@ -1,0 +1,6 @@
+framework module Pods_PokemonAPITest01_PokemonAPITest01UITests {
+  umbrella header "Pods-PokemonAPITest01-PokemonAPITest01UITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
