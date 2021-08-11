@@ -14,5 +14,6 @@ protocol Coordinator {
 	
 }
 protocol Coordinating {
-	var coordinator: Coordinator? {get set}
+	associatedtype CoordinatorType = Coordinator
+	var coordinator: CoordinatorType? {get set}
 }

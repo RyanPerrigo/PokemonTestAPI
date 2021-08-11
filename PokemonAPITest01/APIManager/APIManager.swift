@@ -10,7 +10,7 @@ import RxSwift
 
 class APIManager {
 	
-	let shared = APIManager()
+	static let shared = APIManager()
 	
 	func decodeEndpoint<T:Decodable>(
 		endpointURL:String,

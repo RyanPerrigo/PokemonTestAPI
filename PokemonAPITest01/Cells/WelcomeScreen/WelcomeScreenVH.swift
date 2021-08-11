@@ -6,22 +6,46 @@
 //
 
 import UIKit
+import Kingfisher
 
 class WelcomeScreenVH: UICollectionViewCell, BaseviewHolder {
 
 	
 	@IBOutlet weak var topLevelView: UIView!
+	@IBOutlet weak var welcomeLabel: UILabel!
+	@IBOutlet weak var quizLabel: UILabel!
 	
-    override func awakeFromNib() {
+	@IBOutlet weak var pokeLogoImage: UIImageView!
+	override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
 	func bindData(data: BaseViewHolderModel) {
-		topLevelView.backgroundColor = UIColor.blue
+		
+		
+		pokeLogoImage.image = UIImage(named: "pokemonLogoImage")
+		
+		let labels: [UILabel] = [welcomeLabel,quizLabel]
+		
+		changeLabelColor(labels: labels)
+		
+		topLevelView.backgroundColor = UIColor.black
 		topLevelView.layer.cornerRadius = 25
+		
+		self.layoutMargins.top = 100
+		self.layoutMargins.bottom = 25
+		self.layer.borderWidth = 1
+		self.layer.borderColor = UIColor.white.cgColor
+		self.layer.cornerRadius = 25
 	}
 	
+	func changeLabelColor(labels:[UILabel]) {
+		labels.forEach { label in
+			label.textColor = .red
+			label.font = UIFont.boldSystemFont(ofSize: 18)
+		}
+	}
 }
 
 struct WelcomeScreenVHM: BaseViewHolderModel {
@@ -32,7 +56,7 @@ struct WelcomeScreenVHM: BaseViewHolderModel {
 	}
 	
 	func provideCellSize() -> CGSize {
-		return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.2)
+		return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.4)
 	}
 	
 	func createCustomCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {

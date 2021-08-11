@@ -13,6 +13,7 @@ import RxCocoa
 class MainVC: UIViewController, ViewModelBased, StoryboardBased {
 	
 	@IBOutlet weak var searchButton: UIButton!
+	@IBOutlet weak var testButton: UIButton!
 	
 	var coordinator: MainCoordinator?
 	var viewModel: MainVCM?
@@ -22,9 +23,24 @@ class MainVC: UIViewController, ViewModelBased, StoryboardBased {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+		dynamicCollectionView.backgroundColor = .clear
+		searchButton.layer.borderWidth = 1
+		searchButton.layer.borderColor = UIColor.white.cgColor
+		searchButton.setTitleColor(.red, for: .normal)
+		searchButton.layer.backgroundColor = UIColor.black.cgColor
+		searchButton.titleEdgeInsets.left = 4
+		searchButton.titleEdgeInsets.right = 4
+		searchButton.layer.cornerRadius = 8
 		searchButton.setTitle("Search For Pokemon", for: .normal)
+		testButton.titleLabel?.text = "Test Button"
 		
+		testButton.rx
+			.tap
+			.debounce(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
+			.subscribe { _ in
+			self.viewModel?.testButton()
+//			self.viewModel?.callbackClosure?("HUZZAH")
+		}
 		searchButton.rx.tap.subscribe { _ in
 			self.coordinator?.eventOccured(with: .startGame)
 		}
@@ -34,6 +50,19 @@ class MainVC: UIViewController, ViewModelBased, StoryboardBased {
 		.disposed(by: disposeBag)
 		// Do any additional setup after loading the view.
 		viewModel?.pushInitialScreenState()
+		
+		
+//		viewModel?.callbackClosure = { callbackString in
+//			print("CALLBACK \(callbackString)")
+//		}
+		
+		
+		
+		viewModel?
+			.callbackObservable()
+			.subscribe( onNext: { observableString in
+				print("OBSERVABLE \(observableString)")
+			})
 		
 	}
 	

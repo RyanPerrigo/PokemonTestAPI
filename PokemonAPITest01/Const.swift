@@ -8,5 +8,7 @@
 import Foundation
 
 struct Const {
-	static var getPokemonEnpoint: String = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20"
+	static var getPokemonEnpoint: String = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=151"
+	
+	static var getPokemonBaseUrl: String = "https://pokeapi.co/api/v2/pokemon/"
 }

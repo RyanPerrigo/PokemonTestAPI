@@ -12,11 +12,37 @@ import RxSwift
 class MainVCM: ViewModel {
 	
 	let apiManager: APIManager
-
+	
+	var callbackClosure: ((String) -> Void)?
+	
+	
 	private let displayState: PublishSubject<[BaseViewHolderModel]> = PublishSubject<[BaseViewHolderModel]>()
 	
 	init(apiManager:APIManager){
 		self.apiManager = apiManager
+	}
+	
+	
+	func callbackObservable() -> Observable<String> {
+		
+		return Observable.create { (someObserver) in
+			
+			self.callbackClosure = { callbackString in
+				print("this is also happening")
+				someObserver.onNext(callbackString)
+				
+			}
+			
+			return Disposables.create()
+		}
+	}
+	
+	func myCustomStringObservable(inputString: String) -> Observable<String> {
+		Observable.create { someObserver in
+			let inputString = "THE OBSERVABLE INPUT WAS \(inputString)"
+			someObserver.onNext(inputString)
+			return Disposables.create()
+		}
 	}
 	
 	func getStateObservable() -> Observable<[BaseViewHolderModel]> {
@@ -33,9 +59,28 @@ class MainVCM: ViewModel {
 		displayState.onNext(holderModels)
 	}
 	
-//	func getListOfPokemon() {
-//		
-//		apiManager.decodeEndpoint(endpointURL: Const.getPokemonEnpoint, responseEntityType: GetPokemonEntity.self)
-//	}
+	func testButton() {
+		let array = 0...100
+		
+		let observableArray = Observable.from(array)
+		
+		observableArray.flatMap { singleInt -> Observable<String> in
+			let string = "Observable.just \(singleInt)"
+			
+			return  Observable.just(string)
+		}
+		.flatMap({ observableString in
+			self.myCustomStringObservable(inputString: observableString)
+		})
+		.subscribe { singleObservableString in
+			print("Hello \(singleObservableString)")
+		}
+		
+		
+	}
+	//	func getListOfPokemon() {
+	//
+	//		apiManager.decodeEndpoint(endpointURL: Const.getPokemonEnpoint, responseEntityType: GetPokemonEntity.self)
+	//	}
 	
 }

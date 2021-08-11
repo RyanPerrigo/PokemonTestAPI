@@ -11,12 +11,12 @@ import RxCocoa
 import Reusable
 
 
-class SinglePokemonVC: UIViewController, ViewModelBased, StoryboardBased {
+class SinglePokemonDetailVC: UIViewController, ViewModelBased, StoryboardBased, Coordinating {
 	
 	
-	var coordinator: PokemonCoordinator?
+	var coordinator: MainCoordinator?
 	
-	var viewModel: SinglePokemonVCM?
+	var viewModel: SinglePokemonDetailVCM?
 	private let disposeBag = DisposeBag()
 	
 	@IBOutlet weak var dynamicCollectionView: DynamicCollectionView!
@@ -39,6 +39,10 @@ class SinglePokemonVC: UIViewController, ViewModelBased, StoryboardBased {
 			}
 			)
 			.disposed(by: disposeBag )
+		
+		viewModel?.navToEvolutionsClicked = { theSpeciesUrl in
+			self.coordinator?.eventOccured(with: .pokeEvolutionOverviewClicked(theSpeciesUrl))
+		}
 		
 		viewModel?.populateViewModels()
 	}

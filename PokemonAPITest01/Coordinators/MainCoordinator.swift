@@ -12,7 +12,9 @@ enum AppLevelCoordinatingEvents {
 	case appStart
 	case appRefresh
 	case startGame
-	case singlePokemonClicked(_ responseURL:String)
+	case singlePokemonClicked(_ topLevelPokemonEntity:PokemonTopLevelEntity?,_ pokeUrl: String?)
+	case pokeEvolutionOverviewClicked(_ evolutionUrl: String)
+//	case evolvedPokemonClicked(_ topLevelPokeURL: String)
 }
 
 class MainCoordinator: Coordinator {
@@ -26,6 +28,9 @@ class MainCoordinator: Coordinator {
 	}
 	
 	func eventOccured(with type: AppLevelCoordinatingEvents) {
+		
+		print("Event Occured with type: \(type)")
+		
 		switch type {
 		case .appStart:
 			let vm = MainVCM(apiManager: APIManager())
@@ -37,22 +42,52 @@ class MainCoordinator: Coordinator {
 			UINavigationBar.appearance().backIndicatorImage = UIImage()
 			
 			navController.setViewControllers([vc], animated: false)
-			print("app start")
+			break
+//			print("app start")
 			
 		case .appRefresh:
+			break
 			
-		print("app refresh")
+//		print("app refresh")
+			
 		case .startGame:
-			let vm = PokemonVCM(apiManager: APIManager())
-			let vc = PokemonVC.instantiate(withViewModel: vm)
+			let vm = PokemonOverViewVCM(apiManager: APIManager())
+			let vc = PokemonOverViewVC.instantiate(withViewModel: vm)
 			vc.coordinator = self
 			navController.pushViewController(vc, animated: true)
-		case .singlePokemonClicked(let urlString):
-			let vm = SinglePokemonVCM(apiManager: APIManager(), urlResponse: urlString)
-			let vc = SinglePokemonVC.instantiate(withViewModel: vm)
-			navController.pushViewController(vc, animated: true)
+			break
 			
+		case .singlePokemonClicked(let topLevelPokemonEntity, let urlString):
+			
+			let vm = SinglePokemonDetailVCM(
+				apiManager: APIManager(),
+				topLevelPokeEntity: topLevelPokemonEntity,
+				pokeUrl: urlString
+			)
+			
+			let vc = SinglePokemonDetailVC.instantiate(withViewModel: vm)
+			vc.coordinator = self
+			navController.pushViewController(vc, animated: true)
+			break
+			
+		case .pokeEvolutionOverviewClicked(let evolutionUrl):
+			
+			let vm = PokeEvolutionOverviewVCM(speciesUrl: evolutionUrl)
+			let vc = PokeEvolutionOverviewVC.instantiate(withViewModel: vm)
+			vc.coordinator = self
+			navController.pushViewController(vc, animated: true)
+			break
+			
+//		case .evolvedPokemonClicked(let topLevelPokeUrl):
+//
+//			let vm = EvolvedPokeVCM(urlString: topLevelPokeUrl)
+//			let vc = EvolvedPokeVC.instantiate(withViewModel: vm)
+//			vc.coordinator = self
+//			navController.pushViewController(vc, animated: true)
+		
 		}
+		
+		
 		
 	}
 	

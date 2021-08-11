@@ -106,6 +106,15 @@ struct spritesObject: Codable {
 	var other: otherObject
 	var versions: versionsObject
 }
+struct singleStatObject: Codable {
+	var name: String
+	var url: String
+}
+struct statsObject: Codable {
+	var base_stat: Int
+	var effort: Int
+	var stat: singleStatObject
+}
 struct PokemonTopLevelEntity: Codable {
 	var abilities: [ablitiyObject]?
 	var base_experience: Int?
@@ -121,5 +130,6 @@ struct PokemonTopLevelEntity: Codable {
 	var order: Int?
 	var species: speciesObject
 	var sprites: spritesObject
+	var stats: [statsObject]
 	
 }

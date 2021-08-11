@@ -10,12 +10,13 @@ import RxSwift
 import RxCocoa
 import Reusable
 
-class PokemonVC: UIViewController, ViewModelBased, StoryboardBased {
+class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
+	
 	
 	@IBOutlet weak var dynamicCollectionView: DynamicCollectionView!
 	
 	var coordinator: MainCoordinator?
-	var viewModel: PokemonVCM?
+	var viewModel: PokemonOverViewVCM?
 	let disposeBag = DisposeBag()
 	
 	
@@ -23,33 +24,36 @@ class PokemonVC: UIViewController, ViewModelBased, StoryboardBased {
 		
 		print("viewDidLoad()")
 		
-//		viewModel?.stateObservable()
-//			.subscribe(onNext: { (holderModels) in
-//
-//					self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
-//
-//		})
-//		.disposed(by: disposeBag)
-		viewModel?.navigateToSinglePokemonCallback = { responseURL in
+		
+		viewModel?.navigateToSinglePokeDetailCallback = { toplevelEntity in
 			
-			self.coordinator?.eventOccured(with: .singlePokemonClicked(responseURL))
+			self.coordinator?
+				.eventOccured(with: .singlePokemonClicked(
+					toplevelEntity,
+					nil
+				)
+				)
 		}
-		viewModel?.screenStateObservable()
+		
+		viewModel?
+			.screenStateObservable()
 			.subscribe(onNext: { (screenState) in
 				
 				switch(screenState) {
 				
 				case .loading:
-					print("loading")
-					//display loading text or something
+					var holderModels:[BaseViewHolderModel] = []
+					let spinnerModel = LoadingVHM()
+					holderModels.append(spinnerModel)
+					self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
 				case let .success(holderModels):
 					
 					self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
 					
 				case .error:
 					print("Error")
-					//display error state
-					
+				//display error state
+				
 				case .nextPageLoading:
 					
 					print("somethingElse")
@@ -61,7 +65,7 @@ class PokemonVC: UIViewController, ViewModelBased, StoryboardBased {
 			})
 			.disposed(by: disposeBag)
 		
-		self.viewModel?.populateHolderModels()
+		viewModel?.populateFlatMapObservableChain()
 		
 	}
 	
