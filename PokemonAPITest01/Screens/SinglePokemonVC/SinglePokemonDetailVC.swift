@@ -16,6 +16,10 @@ class SinglePokemonDetailVC: UIViewController, ViewModelBased, StoryboardBased, 
 	
 	var coordinator: MainCoordinator?
 	
+	
+	
+	
+	
 	var viewModel: SinglePokemonDetailVCM?
 	private let disposeBag = DisposeBag()
 	

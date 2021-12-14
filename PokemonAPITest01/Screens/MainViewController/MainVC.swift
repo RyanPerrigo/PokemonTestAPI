@@ -39,11 +39,13 @@ class MainVC: UIViewController, ViewModelBased, StoryboardBased {
 			.debounce(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
 			.subscribe { _ in
 			self.viewModel?.testButton()
-//			self.viewModel?.callbackClosure?("HUZZAH")
 		}
+			.disposed(
+				by: disposeBag)
 		searchButton.rx.tap.subscribe { _ in
 			self.coordinator?.eventOccured(with: .startGame)
 		}
+		.disposed(by: disposeBag)
 		viewModel?.getStateObservable().subscribe(onNext: { (holderModels) in
 			self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
 		})
@@ -63,8 +65,10 @@ class MainVC: UIViewController, ViewModelBased, StoryboardBased {
 			.subscribe( onNext: { observableString in
 				print("OBSERVABLE \(observableString)")
 			})
+			.disposed(by: disposeBag)
 		
 	}
+	
 	
 	
 }

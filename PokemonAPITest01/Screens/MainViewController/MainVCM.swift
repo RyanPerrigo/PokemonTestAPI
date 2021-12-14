@@ -14,7 +14,7 @@ class MainVCM: ViewModel {
 	let apiManager: APIManager
 	
 	var callbackClosure: ((String) -> Void)?
-	
+	private let disposeBag = DisposeBag()
 	
 	private let displayState: PublishSubject<[BaseViewHolderModel]> = PublishSubject<[BaseViewHolderModel]>()
 	
@@ -75,12 +75,9 @@ class MainVCM: ViewModel {
 		.subscribe { singleObservableString in
 			print("Hello \(singleObservableString)")
 		}
+		.disposed(by: disposeBag)
 		
 		
 	}
-	//	func getListOfPokemon() {
-	//
-	//		apiManager.decodeEndpoint(endpointURL: Const.getPokemonEnpoint, responseEntityType: GetPokemonEntity.self)
-	//	}
-	
+
 }

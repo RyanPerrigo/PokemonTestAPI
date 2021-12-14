@@ -16,13 +16,12 @@ enum SinglePokemonScreenState {
 class SinglePokemonDetailVCM: ViewModel {
 	
 	let apiManager: APIManager
-	
 	let topLevelPokeEntity: PokemonTopLevelEntity?
 	let pokeUrl: String?
-	
+	var navToEvolutionsClicked: ((String) -> Void)?
 	private let disposeBag = DisposeBag()
 	
-	var navToEvolutionsClicked: ((String) -> Void)?
+	
 	
 	init(
 		apiManager:APIManager,

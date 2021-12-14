@@ -19,7 +19,7 @@ class LoadingVH: UICollectionViewCell, BaseviewHolder {
 
 	func bindData(data: BaseViewHolderModel) {
 		
-		guard let viewModel = data as? LoadingVHM else {return}
+		guard let _ = data as? LoadingVHM else {return}
 		
 		topLevelView.backgroundColor = .black
 		

@@ -27,6 +27,23 @@ class PokeEvolutionOverviewVCM: ViewModel {
 		return screenState.asObservable()
 	}
 	
+	func recursiveSearch(evolvesToEntity: evolvesToObject) -> [String:String] {
+		var allEvolutionsDict: [String:String] = [:]
+		
+		for evolvesToEntity in evolvesToEntity.evolves_to {
+			
+			if evolvesToEntity.evolves_to.isEmpty {
+				// break chain
+			}
+			else {
+				allEvolutionsDict[evolvesToEntity.species.name] = evolvesToEntity.species.url
+				recursiveSearch(evolvesToEntity: evolvesToEntity)
+			}
+		}
+		return allEvolutionsDict
+	}
+	
+	
 	func populateHolderModels() {
 		self.apiManager.decodeEndpointObservable(
 			endpointURL: self.speciesUrl,

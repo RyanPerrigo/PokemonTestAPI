@@ -97,6 +97,7 @@ class PokemonOverViewVCM: ViewModel {
 				
 				self.screenState.onNext(.success(holderModels: dynamicRxHolderModels))
 			})
+			.disposed(by: disposeBag)
 	}
 	
 	
