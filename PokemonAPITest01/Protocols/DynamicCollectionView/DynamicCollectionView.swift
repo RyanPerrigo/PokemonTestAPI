@@ -18,9 +18,9 @@ class DynamicCollectionView: UIView, UICollectionViewDataSource, UICollectionVie
 	
 	@IBOutlet weak var innerCollectionView: UICollectionView!
 	
-	var holderData: [BaseViewHolderModel] = []
+	private var holderData: [BaseViewHolderModel] = []
 	
-	
+    private var lastCellHasAppearedListener : (()->Void)?
 	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
@@ -83,5 +83,21 @@ class DynamicCollectionView: UIView, UICollectionViewDataSource, UICollectionVie
 		}
 	}
 	
+    func setLastCellDisplayedListener(listener: @escaping () -> Void) {
+        self.lastCellHasAppearedListener = listener
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if holderData.count != 0 {
+            
+            if (indexPath.item == holderData.count - 1) {
+                lastCellHasAppearedListener?()
+            }
+        }
+//        paginationListener?(indexPath.item)
+        
+        
+    }
 }
 

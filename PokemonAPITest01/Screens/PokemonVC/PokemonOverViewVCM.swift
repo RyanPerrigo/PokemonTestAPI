@@ -9,6 +9,11 @@ import Foundation
 import RxSwift
 
 
+struct PokemonOverviewModelState {
+    let holderModels: [BaseViewHolderModel]
+    let nextURL: String
+}
+
 class PokemonOverViewVCM: ViewModel {
 	
 	enum PokemonVCState{
@@ -21,149 +26,170 @@ class PokemonOverViewVCM: ViewModel {
 	
 	private let apiManager: APIManager
 	private let disposeBag = DisposeBag()
+    private var viewModelStateSubject: BehaviorSubject<PokemonOverviewModelState>
+    let lastCellCallbackSubject = PublishSubject<Void>()
 	
-	private let screenState: BehaviorSubject<PokemonVCState> = BehaviorSubject(value: .loading)
 	var navigateToSinglePokeDetailCallback: ((_ topLevelPokeEntity: PokemonTopLevelEntity?)->Void)?
 	
-	private var pokemonHolders: [BaseViewHolderModel] = []
 	
 	func screenStateObservable() -> Observable<PokemonVCState> {
-		return screenState.asObservable()
+        return Observable.merge(
+
+            mapNextURLResultsToHolderModels(),
+            mapBottomScrollEventToViewState()
+        )
 	}
 	
 	init(apiManager:APIManager){
 		self.apiManager = apiManager
+        
+        self.viewModelStateSubject = BehaviorSubject<PokemonOverviewModelState>(value: PokemonOverviewModelState(
+            holderModels: [],
+            nextURL: Const.getPokemonEnpoint
+        ))
+        
+       
 	}
+    
+    func mapBottomScrollEventToViewState() -> Observable<PokemonVCState> {
+        return lastCellCallbackSubject.flatMap { _ in
+            return self.mapNextURLResultsToHolderModels()
+        }
+    }
 	
-	
-	func populateHolderModels() {
-		
-		//				apiManager
-		//					.decodeEndpoint(
-		//						endpointURL: Const.getPokemonEnpoint,
-		//						responseEntityType: GetPokemonEntity.self,
-		//						onDecodedCallback: { listOfPokemon in
-		//
-		//					let displayPokemon = listOfPokemon.results.map { resultsObject in
-		//								SingleLabelVHM(labelText: resultsObject.name, onViewTapped: {
-		//									self.navigateToSinglePokemonCallback?(resultsObject.url)
-		//								})
-		//							}
-		//
-		//							self.screenState.onNext(.success(holderModels: displayPokemon))
-		//
-		////							self.holderModelState.onNext(displayPokemon)
-		//				})
-		
-		//		apiManager
-		//			.decodeEndpointObservable(
-		//				endpointURL: Const.getPokemonEnpoint,
-		//				responseEntityType: GetPokemonEntity.self
-		//			)
-		//			.subscribe { listOfPokemon in
-		//				let displayPokemon = listOfPokemon.results.map { resultsObject in
-		//					SingleLabelVHM(labelText: resultsObject.name, onViewTapped: {
-		//						self.navigateToSinglePokemonCallback?(resultsObject.url)
-		//					})
-		//				}
-		//
-		//				self.screenState.onNext(.success(holderModels: displayPokemon))
-		//			} onError: { error in
-		//				print(error)
-		//			} onCompleted: {
-		//
-		//			} onDisposed: {
-		//
-		//			}
-		
-		print("OBSERVABLE CHAIN BEGIN")
-		
-		
-		
-	}
 	
 	//the bad way -- takes logic and makes individual api calls within each individual VHM
-	func generateRxViewHolderModels()  {
-		apiManager
-			.decodeEndpointObservable(
-				endpointURL: Const.getPokemonEnpoint,
-				responseEntityType: GetPokemonEntity.self
-			)
-			.subscribe(onNext: { (getPokemonResponseEntity) in
-				
-				let dynamicRxHolderModels = getPokemonResponseEntity.results.map { resultsObject in
-					DynamicSinglePokemonInfoVHM(pokemonDetailUrl: resultsObject.url)
-				}
-				
-				self.screenState.onNext(.success(holderModels: dynamicRxHolderModels))
-			})
-			.disposed(by: disposeBag)
-	}
+//	func generateRxViewHolderModels()  {
+//		apiManager
+//			.decodeEndpointObservable(
+//				endpointURL: Const.getPokemonEnpoint,
+//				responseEntityType: GetPokemonEntity.self
+//			)
+//			.subscribe(onNext: { (getPokemonResponseEntity) in
+//
+//				let dynamicRxHolderModels = getPokemonResponseEntity.results.map { resultsObject in
+//					DynamicSinglePokemonInfoVHM(pokemonDetailUrl: resultsObject.url)
+//				}
+//
+//				self.screenState.onNext(.success(holderModels: dynamicRxHolderModels))
+//			})
+//			.disposed(by: disposeBag)
+//	}
 	
 	
-	func populateFlatMapObservableChain() {
-		
-		apiManager
-			.decodeEndpointObservable(
-				endpointURL: Const.getPokemonEnpoint,
-				responseEntityType: GetPokemonEntity.self
-			)
-			.concatMap { (getPokemonResponseEntity) in
-				
-				
-				return Observable.from(getPokemonResponseEntity.results) //breaks array into array of indy observables
-			}
-			.concatMap { (resultsObject: resultsObject) -> Observable<PokemonTopLevelEntity> in
-				return self.apiManager.decodeEndpointObservable(endpointURL: resultsObject.url, responseEntityType: PokemonTopLevelEntity.self)
-			}
-			.concatMap { (pokemonTopLevelEntity) -> Observable<SinglePokeVHM> in
-				
-				
-				let singlePokeHolderModel = SinglePokeVHM(
-					topLevelPokemonEntity: pokemonTopLevelEntity
-				)
-				{ passedTopLevelPokeEntity in
-					self.navigateToSinglePokeDetailCallback?(passedTopLevelPokeEntity)
-				} onViewTappedWithUrlPayload: { optionalString in
-					print("string passed")
-					
-				}
-				
-				return Observable.just(singlePokeHolderModel)
-			}
-			.toArray()
-			.subscribe(onSuccess: { allHolders in
-				self.screenState.onNext(.success(holderModels: allHolders))
-			})
-			.disposed(by: disposeBag)
-		
-	}
+//	func populateFlatMapObservableChain() -> Observable<PokemonVCState> {
+//
+//		return apiManager
+//			.decodeEndpointObservable(
+//				endpointURL: Const.getPokemonEnpoint,
+//				responseEntityType: GetPokemonEntity.self
+//			)
+//			.concatMap { (getPokemonResponseEntity) -> Observable<ResultsObject> in
+//
+//                self.updateViewModelStateSubject(nextURL: getPokemonResponseEntity.next)
+//
+//				return Observable.from(getPokemonResponseEntity.results) //breaks array into array of indy observables
+//			}
+//			.concatMap { (resultsObject: ResultsObject) -> Observable<PokemonTopLevelEntity> in
+//				return self.apiManager.decodeEndpointObservable(endpointURL: resultsObject.url, responseEntityType: PokemonTopLevelEntity.self)
+//			}
+//			.concatMap { (pokemonTopLevelEntity) -> Observable<SinglePokeVHM> in
+//
+//
+//				let singlePokeHolderModel = SinglePokeVHM(
+//					topLevelPokemonEntity: pokemonTopLevelEntity
+//				)
+//				{ passedTopLevelPokeEntity in
+//					self.navigateToSinglePokeDetailCallback?(passedTopLevelPokeEntity)
+//				} onViewTappedWithUrlPayload: { optionalString in
+//					print("string passed")
+//
+//				}
+//
+//				return Observable.just(singlePokeHolderModel)
+//			}
+//			.toArray()
+//            .asObservable()
+//            .flatMap { allHolders -> Observable<PokemonVCState> in
+//                return Observable.just(.success(holderModels: allHolders))
+//            }
+//
+//	}
 	
+    private func updateViewModelStateSubject(
+        holderModels: [BaseViewHolderModel]? = nil,
+        nextURL: String? = nil
+    )  {
+        
+            let oldState = try! viewModelStateSubject.value()
+            
+            let newState = PokemonOverviewModelState(
+                holderModels: holderModels ?? oldState.holderModels,
+                nextURL: nextURL ?? oldState.nextURL
+            )
+            
+            viewModelStateSubject.onNext(newState)
+    }
 	
-	//	func generateHolderModels() -> Observable<[SinglePokemonInfoVHM]> {
-	//		return apiManager
-	//			.decodeEndpointObservable(
-	//				endpointURL: Const.getPokemonEnpoint,
-	//				responseEntityType: GetPokemonEntity.self
-	//			)
-	//			.flatMap { (getPokemonResponseEntity) in
-	//				Observable.from(getPokemonResponseEntity.results)
-	//			}
-	//			.flatMap { (resultsObject) -> Observable<PokemonTopLevelEntity> in
-	//				 return self.apiManager.decodeEndpointObservable(endpointURL: resultsObject.url, responseEntityType: PokemonTopLevelEntity.self)
-	//			}
-	//			.flatMap { (pokemonTopLevelEntity: PokemonTopLevelEntity) -> Observable<SinglePokemonInfoVHM> in
-	//
-	//				let singlePokeInfo = SinglePokemonInfoVHM(
-	//					imageURLString: pokemonTopLevelEntity.sprites.front_default!,
-	//					pokemonName: pokemonTopLevelEntity.name!,
-	//					pokemonIdNumber: pokemonTopLevelEntity.id!
-	//				)
-	//
-	//				return Observable.from(singlePokeInfo)
-	//			}
-	//
-	//	}
-	
-	
+    private func mapNextURLResultsToHolderModels() -> Observable<PokemonVCState>{
+        let modelState = try! viewModelStateSubject.value()
+        debugPrint("next url \(modelState.nextURL)")
+        
+       return apiManager.decodeEndpointObservable(
+            endpointURL: modelState.nextURL,
+            responseEntityType: GetPokemonRootEntity.self
+        )
+        .flatMap { (getPokemonEntity:GetPokemonRootEntity) -> Observable<[IndividualPokemonEntity]> in
+
+            self.updateViewModelStateSubject(nextURL: getPokemonEntity.next)
+            return Observable.from(getPokemonEntity.results)
+
+        }
+        .flatMap { entities -> Observable<[PokemonTopLevelEntity]> in
+            
+            
+            let observableUrls = entities.map { indyEntity in
+                
+                return self.apiManager.decodeEndpointObservable(
+                               endpointURL: indyEntity.url,
+                               responseEntityType: PokemonTopLevelEntity.self
+                           )
+            }
+            
+            let zip = Observable.zip(observableUrls)
+            return zip
+            
+        }
+        .flatMap { topLevelEntities -> Observable<PokemonVCState> in
+            
+            let holderModels = topLevelEntities
+                .map { topLevelEntity in
+                return SinglePokeVHM(
+                               topLevelPokemonEntity: topLevelEntity,
+                               urlPlayload: nil,
+                               onViewTappedWithPokemonEntity: { passedTopLevelEntity in
+                                   self.navigateToSinglePokeDetailCallback?(passedTopLevelEntity)
+                               },
+                               onViewTappedWithUrlPayload: {
+                                   optionalURL in
+               
+                               }
+                )
+               
+            }
+            
+            let newModels = modelState.holderModels + holderModels
+            self.updateViewModelStateSubject(holderModels: newModels)
+            
+            return Observable.just(PokemonVCState.success(holderModels: newModels))
+            
+        }
+        
+        
+          
+    }
+    func onScrollToBottomDetected() {
+        debugPrint("Bottom Scroll!!!!")
+        lastCellCallbackSubject.onNext(Void())
+    }
 }

@@ -31,8 +31,7 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
 				.eventOccured(with: .singlePokemonClicked(
 					toplevelEntity,
 					nil
-				)
-				)
+				))
 		}
 		
 		viewModel?
@@ -59,14 +58,20 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
 					print("somethingElse")
 				case .nextPageLoadSuccess(holderModels: let holderModels):
 					
+                    self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
 					print("something\(holderModels)")
 				}
 				
-			})
+			},
+                       onError: {error in
+                debugPrint(error)
+            })
 			.disposed(by: disposeBag)
 		
-		viewModel?.populateFlatMapObservableChain()
-		
+        dynamicCollectionView.setLastCellDisplayedListener {
+            debugPrint("Bottom Detected!!!")
+            self.viewModel?.onScrollToBottomDetected()
+        }
 	}
 	
 }

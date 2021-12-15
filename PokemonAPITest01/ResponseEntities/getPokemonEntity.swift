@@ -7,13 +7,15 @@
 
 import Foundation
 
-struct resultsObject: Decodable {
+struct GetPokemonRootEntity: Decodable {
+    var count: Int
+    var previous: String?
+    var next: String
+    var results: [IndividualPokemonEntity]
+}
+
+
+struct IndividualPokemonEntity: Decodable {
 	var name: String
 	var url: String
-}
-struct GetPokemonEntity: Decodable {
-	var count: Int
-	var next: String
-	var previous: String?
-	var results: [resultsObject]
 }

@@ -27,7 +27,6 @@ class LoadingVH: UICollectionViewCell, BaseviewHolder {
 		
 		spinner.color = .white
 		spinner.startAnimating()
-//		self.addSubview(spinner)
 		
 	}
 }

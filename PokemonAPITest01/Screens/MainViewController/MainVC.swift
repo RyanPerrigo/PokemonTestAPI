@@ -52,12 +52,7 @@ class MainVC: UIViewController, ViewModelBased, StoryboardBased {
 		.disposed(by: disposeBag)
 		// Do any additional setup after loading the view.
 		viewModel?.pushInitialScreenState()
-		
-		
-//		viewModel?.callbackClosure = { callbackString in
-//			print("CALLBACK \(callbackString)")
-//		}
-		
+
 		
 		
 		viewModel?
