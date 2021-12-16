@@ -22,9 +22,12 @@ class SinglePokemonInfoVH: UICollectionViewCell, BaseviewHolder {
 	@IBOutlet weak var hpValue: UILabel!
 	@IBOutlet weak var attackValue: UILabel!
 	@IBOutlet weak var defenceValue: UILabel!
-	@IBOutlet weak var specAttackValue: UILabel!
-	@IBOutlet weak var specDefenceValue: UILabel!
-	@IBOutlet weak var speedValue: UILabel!
+    @IBOutlet weak var specialAttack: UILabel!
+    @IBOutlet weak var specAttackValue: UILabel!
+    @IBOutlet weak var specialDefence: UILabel!
+    @IBOutlet weak var specDefenceValue: UILabel!
+    @IBOutlet weak var speed: UILabel!
+    @IBOutlet weak var speedValue: UILabel!
 	@IBOutlet weak var hp: UILabel!
 	@IBOutlet weak var attack: UILabel!
 	@IBOutlet weak var defence: UILabel!
@@ -44,18 +47,19 @@ class SinglePokemonInfoVH: UICollectionViewCell, BaseviewHolder {
 		topLevelView.layer.cornerRadius = 8
 		
 		let imageUrl = URL(string: viewModel.topLevelPokeEntity.sprites.front_default!)
+      
 		pokemonImage.kf.setImage(with: imageUrl)
 		pokemonImage.clipsToBounds = true
-		
+        pokemonImage.contentMode = .scaleAspectFill
 		pokemonName.textColor = .red
-		pokemonName.text = viewModel.topLevelPokeEntity.name!.capitalized
-		
-		pokemonIDNumber.text = String(viewModel.topLevelPokeEntity.id!)
+        pokemonName.text = viewModel.topLevelPokeEntity.name!.capitalized
+        pokemonName.font = UIFont.boldSystemFont(ofSize: 25)
+		pokemonIDNumber.text =  String(viewModel.topLevelPokeEntity.id!)
 		pokemonIDNumber.textColor = .red
 		
-		statsLabel.text = "Stats"
+		statsLabel.text = "Basic Stats"
 		statsLabel.textColor = .red
-		statsLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        statsLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
 		
 		viewModel.topLevelPokeEntity.stats.forEach { statsObject in
 			
@@ -76,6 +80,29 @@ class SinglePokemonInfoVH: UICollectionViewCell, BaseviewHolder {
 			}
 			
 		}
+        bindLabelAttributes(lables: [
+            hp,
+            hpValue,
+            attack,
+            attackValue,
+            defence,
+            defenceValue,
+            specialAttack,
+            specAttackValue,
+            specialDefence,
+            specDefenceValue,
+            speed,
+            speedValue
+        ])
+        evolutionsButton.backgroundColor = .black
+        evolutionsButton.shadowDecorate()
+        evolutionsButton.setAttributedTitle(NSAttributedString(
+            string: "Evolutions",
+            attributes: [
+                .font:UIFont.systemFont(ofSize: 12, weight: .semibold),
+                .foregroundColor: UIColor.white
+                        ]
+        ),for: .normal)
         evolutionsButton.layer.cornerRadius = 8
         evolutionsButton.layer.borderWidth = 0.5
         evolutionsButton.layer.borderColor = UIColor.white.cgColor
@@ -87,6 +114,12 @@ class SinglePokemonInfoVH: UICollectionViewCell, BaseviewHolder {
 		}
 		.disposed(by: disposeBag)
 	}
+    func bindLabelAttributes(lables: [UILabel]) {
+        lables.forEach { singleLabel in
+            singleLabel.textColor = .white
+            singleLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        }
+    }
 }
 
 struct SinglePokemonInfoVHM: BaseViewHolderModel {
@@ -106,5 +139,22 @@ struct SinglePokemonInfoVHM: BaseViewHolderModel {
 		collectionView.dequeueReusableCell(withReuseIdentifier: provideNibName(), for: indexPath)
 	}
 	
+   
 	
+}
+
+extension UIButton {
+    
+    func shadowDecorate() {
+        let radius: CGFloat = 10
+       layer.cornerRadius = radius
+        
+    
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0.4, height: 0.3)
+        layer.shadowRadius = 5
+        layer.shadowOpacity = 0.6
+        layer.masksToBounds = false
+        layer.cornerRadius = radius
+    }
 }
