@@ -50,11 +50,11 @@ class PokeEvolutionOverviewVCM: ViewModel {
 //	}
     func recursiveSearch(evolvesToObject: EvolvesToObject) -> [String] {
         
+        allEvolutionsArray.append(evolvesToObject.species.name)
         if evolvesToObject.evolves_to.isEmpty {
-            allEvolutionsArray.append(evolvesToObject.species.name)
+            
         }
         else {
-            allEvolutionsArray.append(evolvesToObject.species.name)
             evolvesToObject.evolves_to.forEach { object in
                 recursiveSearch(evolvesToObject: object)
             }
@@ -74,16 +74,13 @@ class PokeEvolutionOverviewVCM: ViewModel {
 			   
 			   self.apiManager.decodeEndpointObservable(endpointURL: SpeciesResponseEntity.evolution_chain.url, responseEntityType: EvolutionChainTopLevelEntity.self)
 		   }
-            .flatMap { (evolutionChainTopLevelEntity: EvolutionChainTopLevelEntity) -> Observable<[EvolvesToObject]> in
-               return	Observable.just(evolutionChainTopLevelEntity.chain.evolves_to)
-           }
-           .flatMap { (arrayOfChainObjects: [EvolvesToObject]) -> Observable<[String]>in
-               let arrayOfPokemonArrays: [[String]] = arrayOfChainObjects.map { singleEvolvesToObject -> [String] in
-                   let PokemonArray:[String] = self.recursiveSearch(evolvesToObject: singleEvolvesToObject)
-                   return PokemonArray
-               }
-               let singlePokemonArray = arrayOfPokemonArrays.reduce([],+)
-               return Observable.just(singlePokemonArray)
+            .flatMap { (evolutionChainTopLevelEntity: EvolutionChainTopLevelEntity) -> Observable<[String]> in
+                self.allEvolutionsArray.append(evolutionChainTopLevelEntity.chain.species.name)
+              let arrayOfPokemonArrays = evolutionChainTopLevelEntity.chain.evolves_to.map { evolvesToObject -> [String]in
+                    return self.recursiveSearch(evolvesToObject: evolvesToObject)
+                }
+                let singlePokemonArray = arrayOfPokemonArrays.reduce([],+)
+                return Observable.just(singlePokemonArray)
            }.flatMap { (arrayOfStrings: [String]) -> Observable<[PokemonTopLevelEntity]> in
                
                let apiCalls = arrayOfStrings.map { singleString in

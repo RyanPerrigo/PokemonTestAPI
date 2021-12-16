@@ -14,6 +14,7 @@ struct EvolvesToObject: Codable {
 }
 struct ChainObject: Codable {
 	var evolves_to: [EvolvesToObject]
+    var species: speciesObject
 }
 struct EvolutionChainTopLevelEntity: Codable {
 	var chain: ChainObject
