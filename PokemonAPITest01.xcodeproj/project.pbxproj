@@ -49,8 +49,6 @@
 		4B44711526BFA1090006B961 /* PokemonCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44711426BFA1090006B961 /* PokemonCoordinator.swift */; };
 		4B44711926C0C3300006B961 /* SinglePokemonInfoVH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44711726C0C3300006B961 /* SinglePokemonInfoVH.swift */; };
 		4B44711A26C0C3310006B961 /* SinglePokemonInfoVH.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B44711826C0C3300006B961 /* SinglePokemonInfoVH.xib */; };
-		4B44711C26C196EF0006B961 /* DynamicSinglePokemonInfoVH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44711B26C196EF0006B961 /* DynamicSinglePokemonInfoVH.swift */; };
-		4B44711E26C197110006B961 /* DynamicSinglePokemonInfoVH.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B44711D26C197110006B961 /* DynamicSinglePokemonInfoVH.xib */; };
 		4B44712126C1FF0C0006B961 /* SpeciesResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44712026C1FF0B0006B961 /* SpeciesResponseEntity.swift */; };
 		4B44712326C2035F0006B961 /* evolutionChainTopLevelResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44712226C2035F0006B961 /* evolutionChainTopLevelResponseEntity.swift */; };
 		4B44712626C237620006B961 /* PokeEvolutionOverviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44712526C237620006B961 /* PokeEvolutionOverviewVC.swift */; };
@@ -146,8 +144,6 @@
 		4B44711426BFA1090006B961 /* PokemonCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCoordinator.swift; sourceTree = "<group>"; };
 		4B44711726C0C3300006B961 /* SinglePokemonInfoVH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePokemonInfoVH.swift; sourceTree = "<group>"; };
 		4B44711826C0C3300006B961 /* SinglePokemonInfoVH.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SinglePokemonInfoVH.xib; sourceTree = "<group>"; };
-		4B44711B26C196EF0006B961 /* DynamicSinglePokemonInfoVH.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicSinglePokemonInfoVH.swift; sourceTree = "<group>"; };
-		4B44711D26C197110006B961 /* DynamicSinglePokemonInfoVH.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicSinglePokemonInfoVH.xib; sourceTree = "<group>"; };
 		4B44712026C1FF0B0006B961 /* SpeciesResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeciesResponseEntity.swift; sourceTree = "<group>"; };
 		4B44712226C2035F0006B961 /* evolutionChainTopLevelResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = evolutionChainTopLevelResponseEntity.swift; sourceTree = "<group>"; };
 		4B44712526C237620006B961 /* PokeEvolutionOverviewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeEvolutionOverviewVC.swift; sourceTree = "<group>"; };
@@ -304,15 +300,6 @@
 			path = SinglePokemonInfoVH;
 			sourceTree = "<group>";
 		};
-		4B44711F26C197B10006B961 /* DynamicSinglePokeInfoVH */ = {
-			isa = PBXGroup;
-			children = (
-				4B44711B26C196EF0006B961 /* DynamicSinglePokemonInfoVH.swift */,
-				4B44711D26C197110006B961 /* DynamicSinglePokemonInfoVH.xib */,
-			);
-			path = DynamicSinglePokeInfoVH;
-			sourceTree = "<group>";
-		};
 		4B44712426C2373B0006B961 /* PokeEvolutionOverView */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,7 +417,6 @@
 			isa = PBXGroup;
 			children = (
 				4B44713626C340850006B961 /* LoadingCell */,
-				4B44711F26C197B10006B961 /* DynamicSinglePokeInfoVH */,
 				4B44711626C0C2CD0006B961 /* SinglePokemonInfoVH */,
 				4B44710526BF63530006B961 /* SingleImage+LabelCell */,
 				4BBB448C26A896510091E2A9 /* WelcomeScreen */,
@@ -659,7 +645,6 @@
 				4BBB444D26A7747C0091E2A9 /* Assets.xcassets in Resources */,
 				4BBB448026A7793D0091E2A9 /* MainVC.storyboard in Resources */,
 				4BBB444826A774790091E2A9 /* Main.storyboard in Resources */,
-				4B44711E26C197110006B961 /* DynamicSinglePokemonInfoVH.xib in Resources */,
 				4B44711A26C0C3310006B961 /* SinglePokemonInfoVH.xib in Resources */,
 				4B44712A26C2393A0006B961 /* PokeEvolutionOverviewVC.storyboard in Resources */,
 				4B44710426BF62F20006B961 /* PokemonOverViewVC.storyboard in Resources */,
@@ -813,7 +798,6 @@
 				4B4470E426BF15740006B961 /* GenerationVii.swift in Sources */,
 				4BBB448926A77A290091E2A9 /* DynamicCollectionView.swift in Sources */,
 				4BBB447B26A777D70091E2A9 /* MainCoordinator.swift in Sources */,
-				4B44711C26C196EF0006B961 /* DynamicSinglePokemonInfoVH.swift in Sources */,
 				4B4470EE26BF15740006B961 /* RedBlue.swift in Sources */,
 				4B4470DD26BF15740006B961 /* GenerationIii.swift in Sources */,
 				4B44712126C1FF0C0006B961 /* SpeciesResponseEntity.swift in Sources */,

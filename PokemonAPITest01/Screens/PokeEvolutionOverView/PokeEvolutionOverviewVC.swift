@@ -35,6 +35,8 @@ class PokeEvolutionOverviewVC: UIViewController, ViewModelBased, StoryboardBased
                 return
             case .success(let holderModels):
                 self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
+            case .empty:
+                return
             }
         })
             .disposed(

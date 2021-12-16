@@ -76,7 +76,11 @@ class SinglePokemonInfoVH: UICollectionViewCell, BaseviewHolder {
 			}
 			
 		}
-		
+        evolutionsButton.layer.cornerRadius = 8
+        evolutionsButton.layer.borderWidth = 0.5
+        evolutionsButton.layer.borderColor = UIColor.white.cgColor
+        evolutionsButton.contentEdgeInsets.left = 10
+        evolutionsButton.contentEdgeInsets.right = 10
 		evolutionsButton.rx.tap.subscribe { _ in
 			print("evolutionsButton tapped")
 			viewModel.onEvolutionTapped()
