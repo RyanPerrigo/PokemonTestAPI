@@ -10,23 +10,24 @@ import RxSwift
 
 
 class PokeEvolutionOverviewVCM: ViewModel {
-	
+    
     enum ViewState {
-    case success([BaseViewHolderModel])
-    case loading
-    case start
+        case success([BaseViewHolderModel])
+        case loading
+        case start
+        case empty
     }
     
-	let speciesUrl: String
-	var navToPokeEvoDetailsCallback: ((String)->Void)?
-	private let disposeBag = DisposeBag()
-	private let apiManager = APIManager.shared
-	
-	init(speciesUrl: String) {
-		self.speciesUrl = speciesUrl
-	}
-	
-	
+    let speciesUrl: String
+    var navToPokeEvoDetailsCallback: ((String)->Void)?
+    private let disposeBag = DisposeBag()
+    private let apiManager = APIManager.shared
+    
+    init(speciesUrl: String) {
+        self.speciesUrl = speciesUrl
+    }
+    
+    
     func viewStateObservable() -> Observable<ViewState> {
         return Observable.merge(
             getViewStateFromAPICalls()
@@ -34,123 +35,71 @@ class PokeEvolutionOverviewVCM: ViewModel {
     }
     var allEvolutionsArray: [String] = []
     
-//	func recursiveSearch(evolvesToObject: evolvesToObject) -> [String] {
-//
-//        if evolvesToObject.evolves_to.isEmpty {
-//            allEvolutionsArray.append(evolvesToObject.species.name)
-//        }
-//        else {
-//            allEvolutionsArray.append(evolvesToObject.species.name)
-//            evolvesToObject.evolves_to.forEach { object in
-//                recursiveSearch(evolvesToObject: object)
-//            }
-//        }
-//
-//		return allEvolutionsArray
-//	}
+    
     func recursiveSearch(evolvesToObject: EvolvesToObject) -> [String] {
         
         allEvolutionsArray.append(evolvesToObject.species.name)
-        if evolvesToObject.evolves_to.isEmpty {
+        
+        if !evolvesToObject.evolves_to.isEmpty {
             
-        }
-        else {
             evolvesToObject.evolves_to.forEach { object in
+                
                 recursiveSearch(evolvesToObject: object)
+                
             }
         }
-            
+        
         return allEvolutionsArray
     }
-	
-	func getViewStateFromAPICalls() -> Observable<ViewState> {
-        
-		return self.apiManager.decodeEndpointObservable(
-			endpointURL: self.speciesUrl,
-			responseEntityType: SpeciesResponseEntity.self
-		)
+    /// Makes nested api calls to return an observable View State with associated Base View Holder Models
+    func getViewStateFromAPICalls() -> Observable<ViewState> {
+        // api returns nested data, in a recursive structure
+        return self.apiManager.decodeEndpointObservable(
+            endpointURL: self.speciesUrl,
+            responseEntityType: SpeciesResponseEntity.self
+        )
             .flatMap {
-			   SpeciesResponseEntity -> Observable<EvolutionChainTopLevelEntity> in
-			   
-			   self.apiManager.decodeEndpointObservable(endpointURL: SpeciesResponseEntity.evolution_chain.url, responseEntityType: EvolutionChainTopLevelEntity.self)
-		   }
+                SpeciesResponseEntity -> Observable<EvolutionChainTopLevelEntity> in
+                
+                self.apiManager.decodeEndpointObservable(endpointURL: SpeciesResponseEntity.evolution_chain.url, responseEntityType: EvolutionChainTopLevelEntity.self)
+            }
             .flatMap { (evolutionChainTopLevelEntity: EvolutionChainTopLevelEntity) -> Observable<[String]> in
                 self.allEvolutionsArray.append(evolutionChainTopLevelEntity.chain.species.name)
-              let arrayOfPokemonArrays = evolutionChainTopLevelEntity.chain.evolves_to.map { evolvesToObject -> [String]in
+                let arrayOfPokemonArrays = evolutionChainTopLevelEntity.chain.evolves_to.map { evolvesToObject -> [String]in
                     return self.recursiveSearch(evolvesToObject: evolvesToObject)
                 }
                 let singlePokemonArray = arrayOfPokemonArrays.reduce([],+)
                 return Observable.just(singlePokemonArray)
-           }.flatMap { (arrayOfStrings: [String]) -> Observable<[PokemonTopLevelEntity]> in
-               
-               let apiCalls = arrayOfStrings.map { singleString in
-                   self.apiManager.decodeEndpointObservable(endpointURL: Const.getPokemonBaseUrl + singleString, responseEntityType: PokemonTopLevelEntity.self)
-               }
-               return Observable.zip(apiCalls)
-           }
-           .flatMap { arrayOfPokemonTopLevelEntity -> Observable<ViewState> in
-               
-              let holderModels = arrayOfPokemonTopLevelEntity.map { singleTopLevelEntity -> BaseViewHolderModel in
-                   let holderModel = SinglePokeVHM(
-                    topLevelPokemonEntity: singleTopLevelEntity,
-                    urlPlayload: nil,
-                    onViewTappedWithPokemonEntity: { passedPokemonTopLevelEntity in
+            }.flatMap { (arrayOfStrings: [String]) -> Observable<[PokemonTopLevelEntity]> in
                 
-                        self.navToPokeEvoDetailsCallback?(Const.getPokemonBaseUrl + singleTopLevelEntity.name!)
-                    },
-                    onViewTappedWithUrlPayload: {
-                        _ in
-                    })
-                   return holderModel
-               }
-               return Observable.just(ViewState.success(holderModels))
-           }
+                let apiCalls = arrayOfStrings.map { singleString in
+                    self.apiManager.decodeEndpointObservable(endpointURL: Const.getPokemonBaseUrl + singleString, responseEntityType: PokemonTopLevelEntity.self)
+                }
+                return Observable.zip(apiCalls)
+            }
+            .flatMap { arrayOfPokemonTopLevelEntity -> Observable<ViewState> in
+                
+                let holderModels = arrayOfPokemonTopLevelEntity.map { singleTopLevelEntity -> BaseViewHolderModel in
+                    let holderModel = SinglePokeVHM(
+                        topLevelPokemonEntity: singleTopLevelEntity,
+                        urlPlayload: nil,
+                        onViewTappedWithPokemonEntity: { passedPokemonTopLevelEntity in
+                            
+                            self.navToPokeEvoDetailsCallback?(Const.getPokemonBaseUrl + singleTopLevelEntity.name!)
+                        },
+                        onViewTappedWithUrlPayload: {
+                            _ in
+                        })
+                    return holderModel
+                }
+                if holderModels.isEmpty {
+                    return Observable.just(ViewState.empty)
+                }
+                else {
+                    return Observable.just(ViewState.success(holderModels))
+                }
+                
+            }
         
-        }
-//    func mapArrayOfPokemonToViewState() -> Observable<ViewState> {
-//
-//        getViewStateFromAPICalls()
-//
-//    }
-        
-        
-        
-//		   .concatMap { (evolvesToObject) -> Observable<[PokemonTopLevelEntity]> in
-//
-//              let doubleArrayOfStrings = evolvesToObject.evolves_to.map { singleObject in
-//                   self.recursiveSearch(evolvesToObject: singleObject)
-//               }
-//              let allEvolutions = doubleArrayOfStrings.reduce([],+)
-//               print("ALL EVOLUTIONS ----- \(allEvolutions)")
-//               let apiCalls: [Observable<PokemonTopLevelEntity>] = allEvolutions.map { pokemon in
-//                   let pokemonDetailUrl = Const.getPokemonBaseUrl + pokemon
-//                   print(pokemon)
-//                   return self.apiManager.decodeEndpointObservable(endpointURL: pokemonDetailUrl, responseEntityType: PokemonTopLevelEntity.self)
-//               }
-//              return Observable.zip(apiCalls)
-//           }
-//           .flatMap {
-//               (pokeArray:[PokemonTopLevelEntity]) -> Observable<ViewState> in
-//               let holderModels:[BaseViewHolderModel] = pokeArray.map { topLevelPokeEntity in
-//
-//                   let singlePokemonHolder = SinglePokeVHM(
-//                    topLevelPokemonEntity: topLevelPokeEntity,
-//                    urlPlayload: topLevelPokeEntity.species.url) { pokemonTopLevelEntity in
-//
-//                    } onViewTappedWithUrlPayload: { _ in
-//
-//                    }
-//
-//                   return singlePokemonHolder
-//               }
-//               return Observable.just(ViewState.success(holderModels))
-//           }
-           
-	
-//    SinglePokemonInfoVHM(
-//     topLevelPokeEntity: topLevelPokeEntity,
-//     onEvolutionTapped: {
-//
-//     })
-	
+    }
 }
