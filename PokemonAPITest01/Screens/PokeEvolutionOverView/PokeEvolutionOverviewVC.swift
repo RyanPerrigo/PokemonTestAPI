@@ -25,12 +25,21 @@ class PokeEvolutionOverviewVC: UIViewController, ViewModelBased, StoryboardBased
 		
 		
 		
-		viewModel?.screenStateObservable()
-			.subscribe(onNext: { holderModels in
-			self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
-		})
-			.disposed(by: disposeBag)
-		
+        viewModel?.viewStateObservable().subscribe(onNext: {
+            viewState in
+            
+            switch viewState {
+            case .start:
+                return
+            case .loading:
+                return
+            case .success(let holderModels):
+                self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
+            }
+        })
+            .disposed(
+                by: disposeBag)
+        
 		viewModel?.navToPokeEvoDetailsCallback = { urlString in
 
 			self.coordinator?
@@ -40,7 +49,6 @@ class PokeEvolutionOverviewVC: UIViewController, ViewModelBased, StoryboardBased
 				))
 		}
 		
-		viewModel?.populateHolderModels()
 		
 		
 		 

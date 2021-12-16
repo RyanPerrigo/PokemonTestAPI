@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct evolvesToObject: Codable {
+struct EvolvesToObject: Codable {
 	var is_baby: Bool
 	var species: speciesObject
-	var evolves_to: [evolvesToObject]
+	var evolves_to: [EvolvesToObject]
 }
-struct chainObject: Codable {
-	var evolves_to: [evolvesToObject]
+struct ChainObject: Codable {
+	var evolves_to: [EvolvesToObject]
 }
 struct EvolutionChainTopLevelEntity: Codable {
-	var chain: chainObject
+	var chain: ChainObject
 	var id: Int
 }
