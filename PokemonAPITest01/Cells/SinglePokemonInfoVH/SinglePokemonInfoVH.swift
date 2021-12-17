@@ -51,9 +51,17 @@ class SinglePokemonInfoVH: UICollectionViewCell, BaseviewHolder {
 		pokemonImage.kf.setImage(with: imageUrl)
 		pokemonImage.clipsToBounds = true
         pokemonImage.contentMode = .scaleAspectFill
-		pokemonName.textColor = .red
-        pokemonName.text = viewModel.topLevelPokeEntity.name!.capitalized
-        pokemonName.font = UIFont.boldSystemFont(ofSize: 25)
+        
+        pokemonName.attributedText = NSAttributedString(
+            string: viewModel.topLevelPokeEntity.name!.capitalized,
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 25, weight: .bold),
+                .foregroundColor : UIColor.red,
+                
+                
+            ])
+		
+        
 		pokemonIDNumber.text =  String(viewModel.topLevelPokeEntity.id!)
 		pokemonIDNumber.textColor = .red
 		

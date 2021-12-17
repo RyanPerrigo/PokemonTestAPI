@@ -61,6 +61,7 @@
 		4B44713A26C340A60006B961 /* LoadingVH.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B44713826C340A60006B961 /* LoadingVH.xib */; };
 		4B74C2A8276CCEA300A1F2DD /* NoEvolutionsVH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B74C2A6276CCEA300A1F2DD /* NoEvolutionsVH.swift */; };
 		4B74C2A9276CCEA300A1F2DD /* NoEvolutionsVH.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B74C2A7276CCEA300A1F2DD /* NoEvolutionsVH.xib */; };
+		4B74C2AC276D2C3100A1F2DD /* all-pokemon.json in Resources */ = {isa = PBXBuildFile; fileRef = 4B74C2AB276D2C3100A1F2DD /* all-pokemon.json */; };
 		4B81D9E8276C09CF008A33D2 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B81D9E7276C09CF008A33D2 /* SearchBarView.swift */; };
 		4B81D9EA276C09DD008A33D2 /* SearchBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B81D9E9276C09DD008A33D2 /* SearchBarView.xib */; };
 		4BBB444126A774790091E2A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB444026A774790091E2A9 /* AppDelegate.swift */; };
@@ -160,6 +161,7 @@
 		4B44713826C340A60006B961 /* LoadingVH.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingVH.xib; sourceTree = "<group>"; };
 		4B74C2A6276CCEA300A1F2DD /* NoEvolutionsVH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoEvolutionsVH.swift; sourceTree = "<group>"; };
 		4B74C2A7276CCEA300A1F2DD /* NoEvolutionsVH.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoEvolutionsVH.xib; sourceTree = "<group>"; };
+		4B74C2AB276D2C3100A1F2DD /* all-pokemon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "all-pokemon.json"; sourceTree = "<group>"; };
 		4B81D9E7276C09CF008A33D2 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		4B81D9E9276C09DD008A33D2 /* SearchBarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchBarView.xib; sourceTree = "<group>"; };
 		4BBB443D26A774790091E2A9 /* PokemonAPITest01.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokemonAPITest01.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -346,6 +348,14 @@
 			path = NoEvolutionsVH;
 			sourceTree = "<group>";
 		};
+		4B74C2AA276D2B4100A1F2DD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4B74C2AB276D2C3100A1F2DD /* all-pokemon.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		4B81D9E6276C09BD008A33D2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -380,6 +390,7 @@
 		4BBB443F26A774790091E2A9 /* PokemonAPITest01 */ = {
 			isa = PBXGroup;
 			children = (
+				4B74C2AA276D2B4100A1F2DD /* Resources */,
 				4B81D9E6276C09BD008A33D2 /* Views */,
 				4BBB449226ACD1310091E2A9 /* ResponseEntities */,
 				4BBB449126ACD1190091E2A9 /* APIManager */,
@@ -671,6 +682,7 @@
 				4B81D9EA276C09DD008A33D2 /* SearchBarView.xib in Resources */,
 				4B44710926BF63A60006B961 /* SinglePokeVH.xib in Resources */,
 				4BBB449026A896AE0091E2A9 /* WelcomeScreenVH.xib in Resources */,
+				4B74C2AC276D2C3100A1F2DD /* all-pokemon.json in Resources */,
 				4B74C2A9276CCEA300A1F2DD /* NoEvolutionsVH.xib in Resources */,
 				4BBB444D26A7747C0091E2A9 /* Assets.xcassets in Resources */,
 				4BBB448026A7793D0091E2A9 /* MainVC.storyboard in Resources */,

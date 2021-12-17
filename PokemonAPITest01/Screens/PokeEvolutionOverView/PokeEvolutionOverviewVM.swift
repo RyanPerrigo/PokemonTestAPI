@@ -83,12 +83,15 @@ class PokeEvolutionOverviewVM: ViewModel {
                 return Observable.just(singlePokemonArray)
             }.flatMap { (arrayOfStrings: [String]) -> Observable<[PokemonTopLevelEntity]> in
                 
-                if arrayOfStrings.isEmpty {
+                let dedupedStrings: Set<String> = Set(arrayOfStrings)
+                let dedupedArray = Array(dedupedStrings)
+                
+                if dedupedArray.isEmpty {
                     self.viewStateSubject.onNext(.empty)
                     print("NO STRINGS TO PASS INTO API CALL?!?!")
                     return Observable.empty()
                 }
-                let apiCalls = arrayOfStrings.map { singleString in
+                let apiCalls = dedupedArray.map { singleString in
                     self.apiManager.decodeEndpointObservable(endpointURL: Const.getPokemonBaseUrl + singleString, responseEntityType: PokemonTopLevelEntity.self,
                                                              errorCallback: {
                         debugPrint("ERROR GETTING POKEMON TOP LEVEL ENTITY IN POKEMON EVOLTUTION OVERVIEW VM")
@@ -97,6 +100,8 @@ class PokeEvolutionOverviewVM: ViewModel {
                 return Observable.zip(apiCalls)
             }
             .flatMap { arrayOfPokemonTopLevelEntity -> Observable<ViewState> in
+                
+                
                 
                 let holderModels = arrayOfPokemonTopLevelEntity.map { singleTopLevelEntity -> SinglePokeVHM in
                     let holderModel = SinglePokeVHM(
@@ -111,20 +116,13 @@ class PokeEvolutionOverviewVM: ViewModel {
                         })
                     return holderModel
                 }
-                holderModels.forEach { singleHolderModel in
-                    let bool = filteredHolderModels.contains { singleModel in
-                        singleModel.topLevelPokemonEntity.name == singleHolderModel.topLevelPokemonEntity.name
-                    }
-                    if !bool {
-                        filteredHolderModels.append(singleHolderModel)
-                    }
-                }
                 
-                if filteredHolderModels.isEmpty {
+                
+                if holderModels.isEmpty {
                     return Observable.just(ViewState.empty)
                 }
                 else {
-                    return Observable.just(ViewState.success(filteredHolderModels))
+                    return Observable.just(ViewState.success(holderModels))
                 }
                 
             }

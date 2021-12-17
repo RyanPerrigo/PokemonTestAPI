@@ -31,6 +31,7 @@ class PokemonOverViewVM: ViewModel {
     let searchTextSubject = BehaviorSubject<String>(value: "")
    private let lastCellCallbackSubject = PublishSubject<Void>()
    private let onSearchClickedEventSubject = PublishSubject<Void>()
+    private let allPokemonSearchSubject: BehaviorSubject<[IndividualPokemonEntity]> = BehaviorSubject<[IndividualPokemonEntity]>(value: [])
 	
 	var navigateToSinglePokeDetailCallback: ((_ topLevelPokeEntity: PokemonTopLevelEntity?)->Void)?
 	
@@ -49,6 +50,19 @@ class PokemonOverViewVM: ViewModel {
 	init(apiManager:APIManager){
 		self.apiManager = apiManager
         
+        if let path = Bundle.main.path(forResource: "all-pokemon", ofType: "json") {
+            do {
+                  let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                
+                let decoder = JSONDecoder()
+                            let jsonData = try decoder.decode(GetPokemonRootEntity.self, from: data)
+                
+                allPokemonSearchSubject.onNext(jsonData.results)
+                 
+              } catch {
+                   // handle error
+              }
+        }
         self.viewModelStateSubject = BehaviorSubject<PokemonOverviewModelState>(value: PokemonOverviewModelState(
             holderModels: [],
             nextURL: Const.getPokemonEnpoint
@@ -56,6 +70,7 @@ class PokemonOverViewVM: ViewModel {
         
        
 	}
+    
     
     func mapBottomScrollEventToViewState() -> Observable<ViewState> {
         return lastCellCallbackSubject.flatMap { _ in
