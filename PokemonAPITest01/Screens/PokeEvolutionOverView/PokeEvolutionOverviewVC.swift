@@ -19,11 +19,7 @@ class PokeEvolutionOverviewVC: UIViewController, ViewModelBased, StoryboardBased
 	@IBOutlet weak var dynamicCollectionView: DynamicCollectionView!
 	
 	
-	
-	
 	override func viewDidLoad() {
-		
-		
 		
         viewModel?.viewStateObservable().subscribe(onNext: {
             viewState in
@@ -36,7 +32,8 @@ class PokeEvolutionOverviewVC: UIViewController, ViewModelBased, StoryboardBased
             case .success(let holderModels):
                 self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
             case .empty:
-                return
+                let emptyModel = [NoEvolutionsVHM()]
+                self.dynamicCollectionView.pushImmutableList(holderModels: emptyModel)
             }
         })
             .disposed(
@@ -50,9 +47,5 @@ class PokeEvolutionOverviewVC: UIViewController, ViewModelBased, StoryboardBased
 								urlString
 				))
 		}
-		
-		
-		
-		 
 	}
 }

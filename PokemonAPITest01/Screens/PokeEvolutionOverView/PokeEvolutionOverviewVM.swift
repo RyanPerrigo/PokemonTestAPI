@@ -20,22 +20,27 @@ class PokeEvolutionOverviewVM: ViewModel {
     
     let speciesUrl: String
     var navToPokeEvoDetailsCallback: ((String)->Void)?
+    private let viewStateSubject: BehaviorSubject<ViewState>
     private let disposeBag = DisposeBag()
     private let apiManager = APIManager.shared
     
     init(speciesUrl: String) {
         self.speciesUrl = speciesUrl
+        self.viewStateSubject = BehaviorSubject<ViewState>(value: .start)
     }
     
     
     func viewStateObservable() -> Observable<ViewState> {
         return Observable.merge(
-            getViewStateFromAPICalls()
+            getViewStateFromAPICalls(),
+            viewStateSubjectObservable()
         )
     }
     var allEvolutionsArray: [String] = []
     
-    
+    func viewStateSubjectObservable() -> Observable<ViewState> {
+        return viewStateSubject.asObservable()
+    }
     func recursiveSearch(evolvesToObject: EvolvesToObject) -> [String] {
         
         allEvolutionsArray.append(evolvesToObject.species.name)
@@ -67,8 +72,7 @@ class PokeEvolutionOverviewVM: ViewModel {
                 
                 self.apiManager.decodeEndpointObservable(endpointURL: SpeciesResponseEntity.evolution_chain.url, responseEntityType: EvolutionChainTopLevelEntity.self, errorCallback: {
                     debugPrint("ERROR GETTING EVOLUTION CHAIN TOP LEVEL ENTITY IN POKE EVOLUTION OVERVIEW VM")
-                }
-                )
+                })
             }
             .flatMap { (evolutionChainTopLevelEntity: EvolutionChainTopLevelEntity) -> Observable<[String]> in
                 self.allEvolutionsArray.append(evolutionChainTopLevelEntity.chain.species.name)
@@ -79,9 +83,14 @@ class PokeEvolutionOverviewVM: ViewModel {
                 return Observable.just(singlePokemonArray)
             }.flatMap { (arrayOfStrings: [String]) -> Observable<[PokemonTopLevelEntity]> in
                 
+                if arrayOfStrings.isEmpty {
+                    self.viewStateSubject.onNext(.empty)
+                    print("NO STRINGS TO PASS INTO API CALL?!?!")
+                    return Observable.empty()
+                }
                 let apiCalls = arrayOfStrings.map { singleString in
                     self.apiManager.decodeEndpointObservable(endpointURL: Const.getPokemonBaseUrl + singleString, responseEntityType: PokemonTopLevelEntity.self,
-                        errorCallback: {
+                                                             errorCallback: {
                         debugPrint("ERROR GETTING POKEMON TOP LEVEL ENTITY IN POKEMON EVOLTUTION OVERVIEW VM")
                     })
                 }
@@ -110,7 +119,8 @@ class PokeEvolutionOverviewVM: ViewModel {
                         filteredHolderModels.append(singleHolderModel)
                     }
                 }
-                if holderModels.isEmpty {
+                
+                if filteredHolderModels.isEmpty {
                     return Observable.just(ViewState.empty)
                 }
                 else {
@@ -120,5 +130,6 @@ class PokeEvolutionOverviewVM: ViewModel {
             }
         
     }
+    
     
 }
