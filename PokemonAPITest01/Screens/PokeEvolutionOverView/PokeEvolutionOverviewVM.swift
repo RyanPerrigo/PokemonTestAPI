@@ -53,6 +53,7 @@ class PokeEvolutionOverviewVM: ViewModel {
     }
     /// Makes nested api calls to return an observable View State with associated Base View Holder Models
     func getViewStateFromAPICalls() -> Observable<ViewState> {
+        var filteredHolderModels: [SinglePokeVHM] = []
         // api returns nested data, in a recursive structure
         return self.apiManager.decodeEndpointObservable(
             endpointURL: self.speciesUrl,
@@ -88,7 +89,7 @@ class PokeEvolutionOverviewVM: ViewModel {
             }
             .flatMap { arrayOfPokemonTopLevelEntity -> Observable<ViewState> in
                 
-                let holderModels = arrayOfPokemonTopLevelEntity.map { singleTopLevelEntity -> BaseViewHolderModel in
+                let holderModels = arrayOfPokemonTopLevelEntity.map { singleTopLevelEntity -> SinglePokeVHM in
                     let holderModel = SinglePokeVHM(
                         topLevelPokemonEntity: singleTopLevelEntity,
                         urlPlayload: nil,
@@ -101,11 +102,19 @@ class PokeEvolutionOverviewVM: ViewModel {
                         })
                     return holderModel
                 }
+                holderModels.forEach { singleHolderModel in
+                    let bool = filteredHolderModels.contains { singleModel in
+                        singleModel.topLevelPokemonEntity.name == singleHolderModel.topLevelPokemonEntity.name
+                    }
+                    if !bool {
+                        filteredHolderModels.append(singleHolderModel)
+                    }
+                }
                 if holderModels.isEmpty {
                     return Observable.just(ViewState.empty)
                 }
                 else {
-                    return Observable.just(ViewState.success(holderModels))
+                    return Observable.just(ViewState.success(filteredHolderModels))
                 }
                 
             }
