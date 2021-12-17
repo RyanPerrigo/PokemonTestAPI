@@ -25,27 +25,27 @@ class EvolvedPokeVCM: ViewModel {
 	}
 	
 	
-	func populateScreenState() {
-		
-		var holderModels:[BaseViewHolderModel] = []
-		
-		APIManager.shared.decodeEndpointObservable(
-			endpointURL: urlString,
-			responseEntityType: PokemonTopLevelEntity.self
-		)
-			.flatMap { PokemonTopLevelEntity -> Observable<[BaseViewHolderModel]>in
-				
-				let viewHolder = SinglePokemonInfoVHM(topLevelPokeEntity: PokemonTopLevelEntity) {
-					print("view Tapped")
-				}
-				holderModels.append(viewHolder)
-				return Observable.just(holderModels)
-			}
-			.subscribe { holderModels in
-				self.screenstate.onNext(holderModels)
-			}
-			.disposed(by: disposeBag)
-
-	}
+//	func populateScreenState() {
+//		
+//		var holderModels:[BaseViewHolderModel] = []
+//		
+//		APIManager.shared.decodeEndpointObservable(
+//			endpointURL: urlString,
+//			responseEntityType: PokemonTopLevelEntity.self
+//		)
+//			.flatMap { PokemonTopLevelEntity -> Observable<[BaseViewHolderModel]>in
+//				
+//				let viewHolder = SinglePokemonInfoVHM(topLevelPokeEntity: PokemonTopLevelEntity) {
+//					print("view Tapped")
+//				}
+//				holderModels.append(viewHolder)
+//				return Observable.just(holderModels)
+//			}
+//			.subscribe { holderModels in
+//				self.screenstate.onNext(holderModels)
+//			}
+//			.disposed(by: disposeBag)
+//
+//	}
 	
 }

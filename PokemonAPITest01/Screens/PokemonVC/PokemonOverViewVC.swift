@@ -13,10 +13,11 @@ import Reusable
 class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
 	
 	
-	@IBOutlet weak var dynamicCollectionView: DynamicCollectionView!
+    @IBOutlet weak var topLevelStackView: UIStackView!
+    @IBOutlet weak var dynamicCollectionView: DynamicCollectionView!
 	
-	var coordinator: MainCoordinator?
-	var viewModel: PokemonOverViewVCM?
+    var coordinator: MainCoordinator?
+	var viewModel: PokemonOverViewVM?
 	let disposeBag = DisposeBag()
 	
 	
@@ -33,7 +34,16 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
 					nil
 				))
 		}
-		
+		let searchBar = SearchBarView()
+        
+        searchBar.setViewActions(onTextEntered: { textString in
+            self.viewModel?.searchTextSubject.onNext(textString)
+           
+        }, onSearchClicked: {
+            print("Search clicked")
+            self.viewModel?.onSearchClicked()
+        })
+        self.topLevelStackView.insertArrangedSubview(searchBar, at: 0)
 		viewModel?
 			.screenStateObservable()
 			.subscribe(onNext: { (screenState) in
@@ -41,10 +51,10 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
 				switch(screenState) {
 				
 				case .loading:
-					var holderModels:[BaseViewHolderModel] = []
+					
 					let spinnerModel = LoadingVHM()
-					holderModels.append(spinnerModel)
-					self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
+					
+					self.dynamicCollectionView.pushImmutableList(holderModels: [spinnerModel])
 				case let .success(holderModels):
 					
 					self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
@@ -57,9 +67,19 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
 					
 					print("somethingElse")
 				case .nextPageLoadSuccess(holderModels: let holderModels):
-					
+                    
                     self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
 					print("something\(holderModels)")
+                case .onSearchClicked(let pokemonTopLevelEntity):
+                    self.dismiss(animated: false)
+                    DispatchQueue.main.async {
+                        self.coordinator?
+                            .eventOccured(with: .singlePokemonClicked(
+                                pokemonTopLevelEntity,
+                                nil
+                            ))
+                    }
+                    
 				}
 				
 			},

@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 
-class PokeEvolutionOverviewVCM: ViewModel {
+class PokeEvolutionOverviewVM: ViewModel {
     
     enum ViewState {
         case success([BaseViewHolderModel])
@@ -56,12 +56,18 @@ class PokeEvolutionOverviewVCM: ViewModel {
         // api returns nested data, in a recursive structure
         return self.apiManager.decodeEndpointObservable(
             endpointURL: self.speciesUrl,
-            responseEntityType: SpeciesResponseEntity.self
+            responseEntityType: SpeciesResponseEntity.self,
+            errorCallback: {
+                debugPrint("ERROR GETTING SPECIES RESPONSE ENTITY IN POKE EVOLUTION VM")
+            }
         )
             .flatMap {
                 SpeciesResponseEntity -> Observable<EvolutionChainTopLevelEntity> in
                 
-                self.apiManager.decodeEndpointObservable(endpointURL: SpeciesResponseEntity.evolution_chain.url, responseEntityType: EvolutionChainTopLevelEntity.self)
+                self.apiManager.decodeEndpointObservable(endpointURL: SpeciesResponseEntity.evolution_chain.url, responseEntityType: EvolutionChainTopLevelEntity.self, errorCallback: {
+                    debugPrint("ERROR GETTING EVOLUTION CHAIN TOP LEVEL ENTITY IN POKE EVOLUTION OVERVIEW VM")
+                }
+                )
             }
             .flatMap { (evolutionChainTopLevelEntity: EvolutionChainTopLevelEntity) -> Observable<[String]> in
                 self.allEvolutionsArray.append(evolutionChainTopLevelEntity.chain.species.name)
@@ -73,7 +79,10 @@ class PokeEvolutionOverviewVCM: ViewModel {
             }.flatMap { (arrayOfStrings: [String]) -> Observable<[PokemonTopLevelEntity]> in
                 
                 let apiCalls = arrayOfStrings.map { singleString in
-                    self.apiManager.decodeEndpointObservable(endpointURL: Const.getPokemonBaseUrl + singleString, responseEntityType: PokemonTopLevelEntity.self)
+                    self.apiManager.decodeEndpointObservable(endpointURL: Const.getPokemonBaseUrl + singleString, responseEntityType: PokemonTopLevelEntity.self,
+                        errorCallback: {
+                        debugPrint("ERROR GETTING POKEMON TOP LEVEL ENTITY IN POKEMON EVOLTUTION OVERVIEW VM")
+                    })
                 }
                 return Observable.zip(apiCalls)
             }
@@ -102,4 +111,5 @@ class PokeEvolutionOverviewVCM: ViewModel {
             }
         
     }
+    
 }

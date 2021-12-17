@@ -14,7 +14,7 @@ import Reusable
 class PokeEvolutionOverviewVC: UIViewController, ViewModelBased, StoryboardBased, Coordinating{
 	
 	var coordinator: MainCoordinator?
-	var viewModel: PokeEvolutionOverviewVCM?
+	var viewModel: PokeEvolutionOverviewVM?
 	private let disposeBag = DisposeBag()
 	@IBOutlet weak var dynamicCollectionView: DynamicCollectionView!
 	

@@ -51,7 +51,7 @@ class MainCoordinator: Coordinator {
 //		print("app refresh")
 			
 		case .startGame:
-			let vm = PokemonOverViewVCM(apiManager: APIManager())
+			let vm = PokemonOverViewVM(apiManager: APIManager())
 			let vc = PokemonOverViewVC.instantiate(withViewModel: vm)
 			vc.coordinator = self
 			navController.pushViewController(vc, animated: true)
@@ -59,7 +59,7 @@ class MainCoordinator: Coordinator {
 			
 		case .singlePokemonClicked(let topLevelPokemonEntity, let urlString):
 			
-			let vm = SinglePokemonDetailVCM(
+			let vm = SinglePokemonDetailVM(
 				apiManager: APIManager(),
 				topLevelPokeEntity: topLevelPokemonEntity,
 				pokeUrl: urlString
@@ -72,7 +72,7 @@ class MainCoordinator: Coordinator {
 			
 		case .pokeEvolutionOverviewClicked(let evolutionUrl):
 			
-			let vm = PokeEvolutionOverviewVCM(speciesUrl: evolutionUrl)
+			let vm = PokeEvolutionOverviewVM(speciesUrl: evolutionUrl)
 			let vc = PokeEvolutionOverviewVC.instantiate(withViewModel: vm)
 			vc.coordinator = self
 			navController.pushViewController(vc, animated: true)

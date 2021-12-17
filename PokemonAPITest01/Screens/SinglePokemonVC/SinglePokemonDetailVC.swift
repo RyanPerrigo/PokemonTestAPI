@@ -20,7 +20,7 @@ class SinglePokemonDetailVC: UIViewController, ViewModelBased, StoryboardBased, 
 	
 	
 	
-	var viewModel: SinglePokemonDetailVCM?
+	var viewModel: SinglePokemonDetailVM?
 	private let disposeBag = DisposeBag()
 	
 	@IBOutlet weak var dynamicCollectionView: DynamicCollectionView!

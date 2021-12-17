@@ -13,7 +13,7 @@ enum SinglePokemonScreenState {
 	case success(holderModels:[BaseViewHolderModel])
 	case error
 }
-class SinglePokemonDetailVCM: ViewModel {
+class SinglePokemonDetailVM: ViewModel {
 	
 	let apiManager: APIManager
 	let topLevelPokeEntity: PokemonTopLevelEntity?
@@ -63,7 +63,9 @@ class SinglePokemonDetailVCM: ViewModel {
 			
 			apiManager.decodeEndpointObservable(
 				endpointURL: safeUrl,
-				responseEntityType: PokemonTopLevelEntity.self
+                responseEntityType: PokemonTopLevelEntity.self, errorCallback: {
+                    debugPrint("Some api Response Error being handled in singlePokemonDetailVM")
+                }
 			)
 				.flatMap { pokemonTopLevelEntity -> Observable<SinglePokemonInfoVHM> in
 					

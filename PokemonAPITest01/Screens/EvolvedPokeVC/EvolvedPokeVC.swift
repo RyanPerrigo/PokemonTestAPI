@@ -31,7 +31,7 @@ class EvolvedPokeVC: UIViewController,ViewModelBased,StoryboardBased,Coordinatin
 		
 		
 		
-		viewModel?.populateScreenState()
+//		viewModel?.populateScreenState()
 	}
 	
 }
