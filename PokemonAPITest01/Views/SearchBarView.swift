@@ -10,12 +10,13 @@ import UIKit
 import RxSwift
 
 @IBDesignable
-class SearchBarView: UIView {
+class SearchBarView: UIView, UITextFieldDelegate {
     
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var button: UIButton!
     private var onTextEnteredCallback: ((String)->Void)?
     private var onSearchClickedCallback:(()->Void)?
+    private var allPokemonArray: [String] = ["apple"]
     private let disposeBag = DisposeBag()
     
     private let nibName = "SearchBarView"
@@ -53,7 +54,7 @@ class SearchBarView: UIView {
         ),
             for: .normal)
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onSearchClicked)))
-        
+        textField.delegate = self
         textField.attributedPlaceholder = NSAttributedString(
             string: "Search For a Pokemon",
             attributes: [
@@ -74,8 +75,32 @@ class SearchBarView: UIView {
         let nib = UINib(nibName: nibName, bundle: bundle)
         return nib.instantiate(withOwner: self, options: nil).first as? UIView
     }
-    func setViewActions(onTextEntered:@escaping(String)->Void, onSearchClicked:@escaping()->Void) {
+    func setViewActions(onTextEntered:@escaping(String)->Void, onSearchClicked:@escaping()->Void, allPokemonArray: [String]) {
         self.onTextEnteredCallback = onTextEntered
         self.onSearchClickedCallback = onSearchClicked
+        self.allPokemonArray = allPokemonArray
+    }
+    func autoCompleteText( in textField: UITextField, using string: String, suggestionsArray: [String]) -> Bool {
+            if !string.isEmpty,
+                let selectedTextRange = textField.selectedTextRange,
+                selectedTextRange.end == textField.endOfDocument,
+                let prefixRange = textField.textRange(from: textField.beginningOfDocument, to: selectedTextRange.start),
+                let text = textField.text( in : prefixRange) {
+                let prefix = text + string
+                let matches = suggestionsArray.filter {
+                    $0.hasPrefix(prefix)
+                }
+                if (matches.count > 0) {
+                    textField.text = matches[0]
+                    if let start = textField.position(from: textField.beginningOfDocument, offset: prefix.count) {
+                        textField.selectedTextRange = textField.textRange(from: start, to: textField.endOfDocument)
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return !autoCompleteText(in: textField, using: string, suggestionsArray: allPokemonArray)
     }
 }

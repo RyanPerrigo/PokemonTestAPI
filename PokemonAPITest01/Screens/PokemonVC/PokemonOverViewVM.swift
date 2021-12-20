@@ -55,12 +55,14 @@ class PokemonOverViewVM: ViewModel {
                   let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 
                 let decoder = JSONDecoder()
-                            let jsonData = try decoder.decode(GetPokemonRootEntity.self, from: data)
-                
-                allPokemonSearchSubject.onNext(jsonData.results)
-                 
+                if let jsonData = try? decoder.decode(GetPokemonRootEntity.self, from: data) {
+                    debugPrint(jsonData)
+                    allPokemonSearchSubject.onNext(jsonData.results)
+                } else {
+                    debugPrint("ERROR decoding data from json file ")
+                }
               } catch {
-                   // handle error
+                   
               }
         }
         self.viewModelStateSubject = BehaviorSubject<PokemonOverviewModelState>(value: PokemonOverviewModelState(
@@ -71,7 +73,13 @@ class PokemonOverViewVM: ViewModel {
        
 	}
     
-    
+    func getAllPokemonArray() -> [String] {
+        let allPokemon = try! allPokemonSearchSubject.value()
+        let pokemonNames = allPokemon.map { individualPokemonEntity in
+            individualPokemonEntity.name
+        }
+        return pokemonNames
+    }
     func mapBottomScrollEventToViewState() -> Observable<ViewState> {
         return lastCellCallbackSubject.flatMap { _ in
             return self.mapNextURLResultsToHolderModels()
@@ -156,6 +164,7 @@ class PokemonOverViewVM: ViewModel {
         
           
     }
+    
     func mapSearchClickedEventToViewState() -> Observable<ViewState> {
         return onSearchClickedEventSubject.flatMap { _ -> Observable<ViewState> in
             return self.mapSearchClickedToViewState()

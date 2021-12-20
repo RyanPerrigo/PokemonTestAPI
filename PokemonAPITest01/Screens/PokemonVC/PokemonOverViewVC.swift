@@ -5,7 +5,6 @@
 //  Created by Ryan Perrigo on 8/7/21.
 //
 
-import UIKit
 import RxSwift
 import RxCocoa
 import Reusable
@@ -35,15 +34,18 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
 				))
 		}
 		let searchBar = SearchBarView()
-        
+       
         searchBar.setViewActions(onTextEntered: { textString in
             self.viewModel?.searchTextSubject.onNext(textString)
-           
         }, onSearchClicked: {
             print("Search clicked")
             self.viewModel?.onSearchClicked()
-        })
+        },
+        allPokemonArray: viewModel!.getAllPokemonArray()
+        
+        )
         self.topLevelStackView.insertArrangedSubview(searchBar, at: 0)
+        
 		viewModel?
 			.screenStateObservable()
 			.subscribe(onNext: { (screenState) in
