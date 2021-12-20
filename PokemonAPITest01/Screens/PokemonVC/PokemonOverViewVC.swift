@@ -9,8 +9,7 @@ import RxSwift
 import RxCocoa
 import Reusable
 
-class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
-	
+class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased, UITableViewDelegate, UITableViewDataSource {
 	
     @IBOutlet weak var topLevelStackView: UIStackView!
     @IBOutlet weak var dynamicCollectionView: DynamicCollectionView!
@@ -23,8 +22,11 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
 	override func viewDidLoad() {
 		
 		print("viewDidLoad()")
+        let tableView = UITableView()
 		
-		
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
 		viewModel?.navigateToSinglePokeDetailCallback = { toplevelEntity in
 			
 			self.coordinator?
@@ -35,15 +37,31 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
 		}
 		let searchBar = SearchBarView()
        
-        searchBar.setViewActions(onTextEntered: { textString in
+        searchBar.setViewActions(
+            onTextEntered: { textString in
             self.viewModel?.searchTextSubject.onNext(textString)
-        }, onSearchClicked: {
+                if textString.isEmpty {
+                    self.topLevelStackView.removeArrangedSubview(tableView)
+                }
+            }, onSearchClicked: {
             print("Search clicked")
             self.viewModel?.onSearchClicked()
         },
-        allPokemonArray: viewModel!.getAllPokemonArray()
-        
+            allPokemonArray: viewModel!.getAllPokemonArray(),
+            allMatchesCallBack: { allMatchesArray in
+                
+                if !allMatchesArray.isEmpty {
+                    self.viewModel?.setPokemonSearchResults(results: allMatchesArray)
+                    self.topLevelStackView.insertArrangedSubview(tableView, at: 1)
+                }
+        }
+                                 
         )
+        viewModel?.searchTableDataSourceObservable().subscribe(onNext: { arrayOfResults in
+            tableView.reloadData()
+        })
+            .disposed(
+                by: disposeBag)
         self.topLevelStackView.insertArrangedSubview(searchBar, at: 0)
         
 		viewModel?
@@ -95,5 +113,18 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased {
             self.viewModel?.onScrollToBottomDetected()
         }
 	}
-	
+        // TABLE VIEW DELEGATE METHODS
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel!.getPokemonAutoCompleteResults().count
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MyCell", for: indexPath)
+        cell.textLabel?.text = viewModel?.getPokemonAutoCompleteResults()[indexPath.row]
+        return cell
+        
+    }
 }

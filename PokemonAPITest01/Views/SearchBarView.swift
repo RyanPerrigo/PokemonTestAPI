@@ -17,6 +17,7 @@ class SearchBarView: UIView, UITextFieldDelegate {
     private var onTextEnteredCallback: ((String)->Void)?
     private var onSearchClickedCallback:(()->Void)?
     private var allPokemonArray: [String] = ["apple"]
+    private var matchesCallBack: (([String])->Void)?
     private let disposeBag = DisposeBag()
     
     private let nibName = "SearchBarView"
@@ -75,10 +76,11 @@ class SearchBarView: UIView, UITextFieldDelegate {
         let nib = UINib(nibName: nibName, bundle: bundle)
         return nib.instantiate(withOwner: self, options: nil).first as? UIView
     }
-    func setViewActions(onTextEntered:@escaping(String)->Void, onSearchClicked:@escaping()->Void, allPokemonArray: [String]) {
+    func setViewActions(onTextEntered:@escaping(String)->Void, onSearchClicked:@escaping()->Void, allPokemonArray: [String], allMatchesCallBack:@escaping ([String])->Void) {
         self.onTextEnteredCallback = onTextEntered
         self.onSearchClickedCallback = onSearchClicked
         self.allPokemonArray = allPokemonArray
+        self.matchesCallBack = allMatchesCallBack
     }
     func autoCompleteText( in textField: UITextField, using string: String, suggestionsArray: [String]) -> Bool {
             if !string.isEmpty,
@@ -91,6 +93,7 @@ class SearchBarView: UIView, UITextFieldDelegate {
                     $0.hasPrefix(prefix)
                 }
                 if (matches.count > 0) {
+                    self.matchesCallBack?(matches)
                     textField.text = matches[0]
                     if let start = textField.position(from: textField.beginningOfDocument, offset: prefix.count) {
                         textField.selectedTextRange = textField.textRange(from: start, to: textField.endOfDocument)
@@ -100,6 +103,7 @@ class SearchBarView: UIView, UITextFieldDelegate {
             }
             return false
         }
+  
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return !autoCompleteText(in: textField, using: string, suggestionsArray: allPokemonArray)
     }

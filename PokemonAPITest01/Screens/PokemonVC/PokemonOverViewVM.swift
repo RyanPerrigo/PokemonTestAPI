@@ -31,7 +31,10 @@ class PokemonOverViewVM: ViewModel {
     let searchTextSubject = BehaviorSubject<String>(value: "")
    private let lastCellCallbackSubject = PublishSubject<Void>()
    private let onSearchClickedEventSubject = PublishSubject<Void>()
-    private let allPokemonSearchSubject: BehaviorSubject<[IndividualPokemonEntity]> = BehaviorSubject<[IndividualPokemonEntity]>(value: [])
+   private let allPokemonSearchSubject: BehaviorSubject<[IndividualPokemonEntity]> = BehaviorSubject<[IndividualPokemonEntity]>(value: [])
+    private let searchTableViewDataSubject: BehaviorSubject<[String]> = BehaviorSubject<[String]>(value: [])
+    
+    
 	
 	var navigateToSinglePokeDetailCallback: ((_ topLevelPokeEntity: PokemonTopLevelEntity?)->Void)?
 	
@@ -72,7 +75,17 @@ class PokemonOverViewVM: ViewModel {
         
        
 	}
-    
+    func searchTableDataSourceObservable() -> Observable<[String]> {
+        return searchTableViewDataSubject.asObservable()
+    }
+    func getPokemonAutoCompleteResults() -> [String] {
+        return try! searchTableViewDataSubject.value()
+    }
+    func setPokemonSearchResults(results: [String]?) {
+        if let safeResults = results {
+            searchTableViewDataSubject.onNext(safeResults)
+        }
+    }
     func getAllPokemonArray() -> [String] {
         let allPokemon = try! allPokemonSearchSubject.value()
         let pokemonNames = allPokemon.map { individualPokemonEntity in
@@ -80,6 +93,7 @@ class PokemonOverViewVM: ViewModel {
         }
         return pokemonNames
     }
+    
     func mapBottomScrollEventToViewState() -> Observable<ViewState> {
         return lastCellCallbackSubject.flatMap { _ in
             return self.mapNextURLResultsToHolderModels()

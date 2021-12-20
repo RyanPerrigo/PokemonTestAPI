@@ -10,7 +10,7 @@ import Foundation
 struct GetPokemonRootEntity: Decodable {
     var count: Int
     var previous: String?
-    var next: String
+    var next: String?
     var results: [IndividualPokemonEntity]
 }
 
