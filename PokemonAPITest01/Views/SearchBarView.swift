@@ -15,7 +15,7 @@ class SearchBarView: UIView, UITextFieldDelegate {
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var button: UIButton!
     private var onTextEnteredCallback: ((String)->Void)?
-    private var onSearchClickedCallback:(()->Void)?
+    private var onSearchClickedCallback:((String)->Void)?
     private var allPokemonArray: [String] = ["apple"]
     private var matchesCallBack: (([String])->Void)?
     private let disposeBag = DisposeBag()
@@ -69,14 +69,15 @@ class SearchBarView: UIView, UITextFieldDelegate {
         onTextEnteredCallback?(safeText)
     }
     @objc private func onSearchClicked() {
-        onSearchClickedCallback?()
+        guard let safeText = textField.text else {return}
+        onSearchClickedCallback?(safeText)
     }
     private func loadViewFromNib() -> UIView? {
         let bundle = Bundle(for: type(of: self))
         let nib = UINib(nibName: nibName, bundle: bundle)
         return nib.instantiate(withOwner: self, options: nil).first as? UIView
     }
-    func setViewActions(onTextEntered:@escaping(String)->Void, onSearchClicked:@escaping()->Void, allPokemonArray: [String], allMatchesCallBack:@escaping ([String])->Void) {
+    func setViewActions(onTextEntered:@escaping(String)->Void, onSearchClicked:@escaping(String)->Void, allPokemonArray: [String], allMatchesCallBack:@escaping ([String])->Void) {
         self.onTextEnteredCallback = onTextEntered
         self.onSearchClickedCallback = onSearchClicked
         self.allPokemonArray = allPokemonArray
@@ -107,4 +108,5 @@ class SearchBarView: UIView, UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return !autoCompleteText(in: textField, using: string, suggestionsArray: allPokemonArray)
     }
+    
 }

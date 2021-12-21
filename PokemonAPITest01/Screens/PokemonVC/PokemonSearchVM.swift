@@ -14,7 +14,7 @@ struct PokemonOverviewModelState {
     let nextURL: String
 }
 
-class PokemonOverViewVM: ViewModel {
+class PokemonSearchVM: ViewModel {
 	
 	enum ViewState{
 		case loading
@@ -28,9 +28,8 @@ class PokemonOverViewVM: ViewModel {
 	private let apiManager: APIManager
 	private let disposeBag = DisposeBag()
     private var viewModelStateSubject: BehaviorSubject<PokemonOverviewModelState>
-    let searchTextSubject = BehaviorSubject<String>(value: "")
    private let lastCellCallbackSubject = PublishSubject<Void>()
-   private let onSearchClickedEventSubject = PublishSubject<Void>()
+   private let onSearchClickedEventSubject = PublishSubject<String>()
    private let allPokemonSearchSubject: BehaviorSubject<[IndividualPokemonEntity]> = BehaviorSubject<[IndividualPokemonEntity]>(value: [])
     private let searchTableViewDataSubject: BehaviorSubject<[String]> = BehaviorSubject<[String]>(value: [])
     
@@ -180,16 +179,17 @@ class PokemonOverViewVM: ViewModel {
     }
     
     func mapSearchClickedEventToViewState() -> Observable<ViewState> {
-        return onSearchClickedEventSubject.flatMap { _ -> Observable<ViewState> in
-            return self.mapSearchClickedToViewState()
+        return onSearchClickedEventSubject.flatMap { searchText -> Observable<ViewState> in
+            return self.mapSearchClickedToViewState(searchString: searchText)
         }
     }
-   private func mapSearchClickedToViewState() -> Observable<ViewState>{
+    private func mapSearchClickedToViewState(searchString: String) -> Observable<ViewState>{
        
-       guard let searchString = try? searchTextSubject.value() else {return Observable.empty()}
+//       guard let searchString = try? searchTextSubject.value() else {return Observable.empty()}
         if !searchString.isEmpty {
             
                 return  self.apiManager.decodeEndpointObservable(endpointURL: Const.getPokemonBaseUrl + searchString, responseEntityType: PokemonTopLevelEntity.self, errorCallback: {
+                    debugPrint("Pokemon name -- \(searchString)")
                     debugPrint("NO POKEMON FOUND")
                 }).flatMap { pokemonTopLevelEntity in
                 return Observable.just(ViewState.onSearchClicked(pokemonTopLevelEntity))
@@ -199,8 +199,8 @@ class PokemonOverViewVM: ViewModel {
             return Observable.empty()
         }
     }
-    func onSearchClicked() {
-        onSearchClickedEventSubject.onNext(Void())
+    func onSearchClicked(searchText: String) {
+        onSearchClickedEventSubject.onNext(searchText)
     }
     func onScrollToBottomDetected() {
         debugPrint("Bottom Scroll!!!!")

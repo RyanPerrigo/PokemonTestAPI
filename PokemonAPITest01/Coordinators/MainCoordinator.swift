@@ -43,16 +43,15 @@ class MainCoordinator: Coordinator {
 			
 			navController.setViewControllers([vc], animated: false)
 			break
-//			print("app start")
+
 			
 		case .appRefresh:
 			break
 			
-//		print("app refresh")
 			
 		case .startGame:
-			let vm = PokemonOverViewVM(apiManager: APIManager())
-			let vc = PokemonOverViewVC.instantiate(withViewModel: vm)
+			let vm = PokemonSearchVM(apiManager: APIManager())
+			let vc = PokemonSearchVC.instantiate(withViewModel: vm)
 			vc.coordinator = self
 			navController.pushViewController(vc, animated: true)
 			break

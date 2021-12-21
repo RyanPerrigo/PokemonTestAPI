@@ -9,13 +9,13 @@ import RxSwift
 import RxCocoa
 import Reusable
 
-class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased, UITableViewDelegate, UITableViewDataSource {
+class PokemonSearchVC: UIViewController, ViewModelBased, StoryboardBased, UITableViewDelegate, UITableViewDataSource {
 	
     @IBOutlet weak var topLevelStackView: UIStackView!
     @IBOutlet weak var dynamicCollectionView: DynamicCollectionView!
 	
     var coordinator: MainCoordinator?
-	var viewModel: PokemonOverViewVM?
+	var viewModel: PokemonSearchVM?
 	let disposeBag = DisposeBag()
 	
 	
@@ -39,13 +39,12 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased, UITa
        
         searchBar.setViewActions(
             onTextEntered: { textString in
-            self.viewModel?.searchTextSubject.onNext(textString)
                 if textString.isEmpty {
                     self.topLevelStackView.removeArrangedSubview(tableView)
                 }
-            }, onSearchClicked: {
-            print("Search clicked")
-            self.viewModel?.onSearchClicked()
+            }, onSearchClicked: { textFieldText in
+            print("Search clicked \(textFieldText)")
+                self.viewModel?.onSearchClicked(searchText: textFieldText)
         },
             allPokemonArray: viewModel!.getAllPokemonArray(),
             allMatchesCallBack: { allMatchesArray in
@@ -91,8 +90,9 @@ class PokemonOverViewVC: UIViewController, ViewModelBased, StoryboardBased, UITa
                     self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
 					print("something\(holderModels)")
                 case .onSearchClicked(let pokemonTopLevelEntity):
-                    self.dismiss(animated: false)
+                 
                     DispatchQueue.main.async {
+                        self.dismiss(animated: false)
                         self.coordinator?
                             .eventOccured(with: .singlePokemonClicked(
                                 pokemonTopLevelEntity,

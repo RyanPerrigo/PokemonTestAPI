@@ -37,9 +37,9 @@
 		4B4470F926BF160D0006B961 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4470F826BF160D0006B961 /* APIManager.swift */; };
 		4B4470FB26BF2D170006B961 /* getPokemonEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4470FA26BF2D170006B961 /* getPokemonEntity.swift */; };
 		4B4470FD26BF32420006B961 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4470FC26BF32420006B961 /* Const.swift */; };
-		4B44710026BF62270006B961 /* PokemonOverViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4470FF26BF62270006B961 /* PokemonOverViewVC.swift */; };
-		4B44710226BF628A0006B961 /* PokemonOverViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44710126BF628A0006B961 /* PokemonOverViewVM.swift */; };
-		4B44710426BF62F20006B961 /* PokemonOverViewVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B44710326BF62F20006B961 /* PokemonOverViewVC.storyboard */; };
+		4B44710026BF62270006B961 /* PokemonSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4470FF26BF62270006B961 /* PokemonSearchVC.swift */; };
+		4B44710226BF628A0006B961 /* PokemonSearchVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44710126BF628A0006B961 /* PokemonSearchVM.swift */; };
+		4B44710426BF62F20006B961 /* PokemonSearchVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B44710326BF62F20006B961 /* PokemonSearchVC.storyboard */; };
 		4B44710826BF63A60006B961 /* SinglePokeVH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44710626BF63A60006B961 /* SinglePokeVH.swift */; };
 		4B44710926BF63A60006B961 /* SinglePokeVH.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B44710726BF63A60006B961 /* SinglePokeVH.xib */; };
 		4B44710D26BF95F90006B961 /* SinglePokemonDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44710C26BF95F90006B961 /* SinglePokemonDetailVC.swift */; };
@@ -84,8 +84,6 @@
 		4BBB448F26A896AE0091E2A9 /* WelcomeScreenVH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB448D26A896AE0091E2A9 /* WelcomeScreenVH.swift */; };
 		4BBB449026A896AE0091E2A9 /* WelcomeScreenVH.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBB448E26A896AE0091E2A9 /* WelcomeScreenVH.xib */; };
 		4BBB449426ACD1530091E2A9 /* PokemonTopLevelEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB449326ACD1530091E2A9 /* PokemonTopLevelEntity.swift */; };
-		4BD420F52770C15A008AE607 /* searchResultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD420F32770C15A008AE607 /* searchResultsCell.swift */; };
-		4BD420F62770C15A008AE607 /* searchResultsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BD420F42770C15A008AE607 /* searchResultsCell.xib */; };
 		6D74EB3774D4F445E8F7E465 /* Pods_PokemonAPITest01.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 696D6F121ABCF4C419C21077 /* Pods_PokemonAPITest01.framework */; };
 		A1508049180EBFA3ADE3E9A2 /* Pods_PokemonAPITest01_PokemonAPITest01UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB65CC9B774EAD81EDB31310 /* Pods_PokemonAPITest01_PokemonAPITest01UITests.framework */; };
 		A5DF82F2FA86F4925E1C7594 /* Pods_PokemonAPITest01Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD870090C68B8964081101B5 /* Pods_PokemonAPITest01Tests.framework */; };
@@ -139,9 +137,9 @@
 		4B4470F826BF160D0006B961 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		4B4470FA26BF2D170006B961 /* getPokemonEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getPokemonEntity.swift; sourceTree = "<group>"; };
 		4B4470FC26BF32420006B961 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
-		4B4470FF26BF62270006B961 /* PokemonOverViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonOverViewVC.swift; sourceTree = "<group>"; };
-		4B44710126BF628A0006B961 /* PokemonOverViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonOverViewVM.swift; sourceTree = "<group>"; };
-		4B44710326BF62F20006B961 /* PokemonOverViewVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PokemonOverViewVC.storyboard; sourceTree = "<group>"; };
+		4B4470FF26BF62270006B961 /* PokemonSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonSearchVC.swift; sourceTree = "<group>"; };
+		4B44710126BF628A0006B961 /* PokemonSearchVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonSearchVM.swift; sourceTree = "<group>"; };
+		4B44710326BF62F20006B961 /* PokemonSearchVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PokemonSearchVC.storyboard; sourceTree = "<group>"; };
 		4B44710626BF63A60006B961 /* SinglePokeVH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePokeVH.swift; sourceTree = "<group>"; };
 		4B44710726BF63A60006B961 /* SinglePokeVH.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SinglePokeVH.xib; sourceTree = "<group>"; };
 		4B44710C26BF95F90006B961 /* SinglePokemonDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePokemonDetailVC.swift; sourceTree = "<group>"; };
@@ -192,8 +190,6 @@
 		4BBB448D26A896AE0091E2A9 /* WelcomeScreenVH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreenVH.swift; sourceTree = "<group>"; };
 		4BBB448E26A896AE0091E2A9 /* WelcomeScreenVH.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomeScreenVH.xib; sourceTree = "<group>"; };
 		4BBB449326ACD1530091E2A9 /* PokemonTopLevelEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonTopLevelEntity.swift; sourceTree = "<group>"; };
-		4BD420F32770C15A008AE607 /* searchResultsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = searchResultsCell.swift; sourceTree = "<group>"; };
-		4BD420F42770C15A008AE607 /* searchResultsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = searchResultsCell.xib; sourceTree = "<group>"; };
 		5684EEA0661AF1C7167B9FA5 /* Pods-PokemonAPITest01Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokemonAPITest01Tests.debug.xcconfig"; path = "Target Support Files/Pods-PokemonAPITest01Tests/Pods-PokemonAPITest01Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		6775988DFCA865FC1C06F30C /* Pods-PokemonAPITest01-PokemonAPITest01UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokemonAPITest01-PokemonAPITest01UITests.debug.xcconfig"; path = "Target Support Files/Pods-PokemonAPITest01-PokemonAPITest01UITests/Pods-PokemonAPITest01-PokemonAPITest01UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		696D6F121ABCF4C419C21077 /* Pods_PokemonAPITest01.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PokemonAPITest01.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -271,9 +267,9 @@
 		4B4470FE26BF61FE0006B961 /* PokemonVC */ = {
 			isa = PBXGroup;
 			children = (
-				4B4470FF26BF62270006B961 /* PokemonOverViewVC.swift */,
-				4B44710126BF628A0006B961 /* PokemonOverViewVM.swift */,
-				4B44710326BF62F20006B961 /* PokemonOverViewVC.storyboard */,
+				4B4470FF26BF62270006B961 /* PokemonSearchVC.swift */,
+				4B44710126BF628A0006B961 /* PokemonSearchVM.swift */,
+				4B44710326BF62F20006B961 /* PokemonSearchVC.storyboard */,
 			);
 			path = PokemonVC;
 			sourceTree = "<group>";
@@ -552,18 +548,8 @@
 		4BD420F12770C119008AE607 /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				4BD420F22770C12F008AE607 /* SearchResultsCell */,
 			);
 			path = TableViewCells;
-			sourceTree = "<group>";
-		};
-		4BD420F22770C12F008AE607 /* SearchResultsCell */ = {
-			isa = PBXGroup;
-			children = (
-				4BD420F32770C15A008AE607 /* searchResultsCell.swift */,
-				4BD420F42770C15A008AE607 /* searchResultsCell.xib */,
-			);
-			path = SearchResultsCell;
 			sourceTree = "<group>";
 		};
 		88A457F7456B7E8C0D1A094E /* Pods */ = {
@@ -702,7 +688,6 @@
 				4B44713126C2D9400006B961 /* EvolvedPokeVC.storyboard in Resources */,
 				4BBB448B26A77A4F0091E2A9 /* DynamicCollectionView.xib in Resources */,
 				4B81D9EA276C09DD008A33D2 /* SearchBarView.xib in Resources */,
-				4BD420F62770C15A008AE607 /* searchResultsCell.xib in Resources */,
 				4B44710926BF63A60006B961 /* SinglePokeVH.xib in Resources */,
 				4BBB449026A896AE0091E2A9 /* WelcomeScreenVH.xib in Resources */,
 				4B74C2AC276D2C3100A1F2DD /* all-pokemon.json in Resources */,
@@ -712,7 +697,7 @@
 				4BBB444826A774790091E2A9 /* Main.storyboard in Resources */,
 				4B44711A26C0C3310006B961 /* SinglePokemonInfoVH.xib in Resources */,
 				4B44712A26C2393A0006B961 /* PokeEvolutionOverviewVC.storyboard in Resources */,
-				4B44710426BF62F20006B961 /* PokemonOverViewVC.storyboard in Resources */,
+				4B44710426BF62F20006B961 /* PokemonSearchVC.storyboard in Resources */,
 				4B44711126BF96310006B961 /* SinglePokemonDetailVC.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -841,7 +826,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B44710026BF62270006B961 /* PokemonOverViewVC.swift in Sources */,
+				4B44710026BF62270006B961 /* PokemonSearchVC.swift in Sources */,
 				4B4470EB26BF15740006B961 /* GenerationIi.swift in Sources */,
 				4BBB448626A779CC0091E2A9 /* BaseViewHolder.swift in Sources */,
 				4B4470F226BF15740006B961 /* Other.swift in Sources */,
@@ -855,7 +840,6 @@
 				4B44712326C2035F0006B961 /* evolutionChainTopLevelResponseEntity.swift in Sources */,
 				4B4470F526BF15740006B961 /* Stat.swift in Sources */,
 				4B44710826BF63A60006B961 /* SinglePokeVH.swift in Sources */,
-				4BD420F52770C15A008AE607 /* searchResultsCell.swift in Sources */,
 				4BBB444526A774790091E2A9 /* MainVC.swift in Sources */,
 				4B4470FB26BF2D170006B961 /* getPokemonEntity.swift in Sources */,
 				4BBB449426ACD1530091E2A9 /* PokemonTopLevelEntity.swift in Sources */,
@@ -872,7 +856,7 @@
 				4BBB448426A779A10091E2A9 /* ViewModelBased.swift in Sources */,
 				4B4470E626BF15740006B961 /* OfficialArtwork.swift in Sources */,
 				4B4470F726BF15740006B961 /* GameIndex.swift in Sources */,
-				4B44710226BF628A0006B961 /* PokemonOverViewVM.swift in Sources */,
+				4B44710226BF628A0006B961 /* PokemonSearchVM.swift in Sources */,
 				4B44712626C237620006B961 /* PokeEvolutionOverviewVC.swift in Sources */,
 				4B4470E226BF15740006B961 /* Ability.swift in Sources */,
 				4B4470E726BF15740006B961 /* GenerationV.swift in Sources */,
