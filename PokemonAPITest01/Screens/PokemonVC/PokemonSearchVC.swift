@@ -26,7 +26,7 @@ class PokemonSearchVC: UIViewController, ViewModelBased, StoryboardBased, UITabl
 		
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MyCell") //todo: remember to name this better
 		viewModel?.navigateToSinglePokeDetailCallback = { toplevelEntity in
 			
 			self.coordinator?
@@ -53,9 +53,7 @@ class PokemonSearchVC: UIViewController, ViewModelBased, StoryboardBased, UITabl
                     self.viewModel?.setPokemonSearchResults(results: allMatchesArray)
                     self.topLevelStackView.insertArrangedSubview(tableView, at: 1)
                 }
-        }
-                                 
-        )
+        })
         viewModel?.searchTableDataSourceObservable().subscribe(onNext: { arrayOfResults in
             tableView.reloadData()
         })
@@ -125,6 +123,14 @@ class PokemonSearchVC: UIViewController, ViewModelBased, StoryboardBased, UITabl
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyCell", for: indexPath)
         cell.textLabel?.text = viewModel?.getPokemonAutoCompleteResults()[indexPath.row]
         return cell
+        
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if let autoCompleteResult = viewModel?.getPokemonAutoCompleteResults()[indexPath.row] {
+            
+            self.viewModel?.onSearchClicked(searchText: autoCompleteResult)
+        }
         
     }
 }

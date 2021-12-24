@@ -79,9 +79,11 @@ struct officalArtworkObject: Codable {
 struct otherObject: Codable {
 	var dream_world: dream_worldObject?
 	var officialArtwork: officalArtworkObject?
+    var home: HomeObject
 	
 	enum CodingKeys: String, CodingKey {
 		case officialArtwork = "official-artwork"
+        case home
 	}
 }
 struct generationIObject:Codable {

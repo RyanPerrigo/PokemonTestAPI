@@ -454,7 +454,6 @@
 		4BBB447526A7766F0091E2A9 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				4BD420F12770C119008AE607 /* TableViewCells */,
 				4B74C2A5276CCE7900A1F2DD /* NoEvolutionsVH */,
 				4B44713626C340850006B961 /* LoadingCell */,
 				4B44711626C0C2CD0006B961 /* SinglePokemonInfoVH */,
@@ -543,13 +542,6 @@
 				4B44712226C2035F0006B961 /* evolutionChainTopLevelResponseEntity.swift */,
 			);
 			path = ResponseEntities;
-			sourceTree = "<group>";
-		};
-		4BD420F12770C119008AE607 /* TableViewCells */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = TableViewCells;
 			sourceTree = "<group>";
 		};
 		88A457F7456B7E8C0D1A094E /* Pods */ = {

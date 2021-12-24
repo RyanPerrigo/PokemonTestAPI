@@ -46,7 +46,7 @@ class SinglePokemonInfoVH: UICollectionViewCell, BaseviewHolder {
 		topLevelView.backgroundColor = .darkGray
 		topLevelView.layer.cornerRadius = 8
 		
-		let imageUrl = URL(string: viewModel.topLevelPokeEntity.sprites.front_default!)
+        let imageUrl = URL(string: viewModel.topLevelPokeEntity.sprites.other.home.frontDefault)
       
 		pokemonImage.kf.setImage(with: imageUrl)
 		pokemonImage.clipsToBounds = true

@@ -14,7 +14,6 @@ enum AppLevelCoordinatingEvents {
 	case startGame
 	case singlePokemonClicked(_ topLevelPokemonEntity:PokemonTopLevelEntity?,_ pokeUrl: String?)
 	case pokeEvolutionOverviewClicked(_ evolutionUrl: String)
-//	case evolvedPokemonClicked(_ topLevelPokeURL: String)
 }
 
 class MainCoordinator: Coordinator {
@@ -76,13 +75,6 @@ class MainCoordinator: Coordinator {
 			vc.coordinator = self
 			navController.pushViewController(vc, animated: true)
 			break
-			
-//		case .evolvedPokemonClicked(let topLevelPokeUrl):
-//
-//			let vm = EvolvedPokeVCM(urlString: topLevelPokeUrl)
-//			let vc = EvolvedPokeVC.instantiate(withViewModel: vm)
-//			vc.coordinator = self
-//			navController.pushViewController(vc, animated: true)
 		
 		}
 		
