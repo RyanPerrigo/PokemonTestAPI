@@ -16,7 +16,7 @@ class SearchBarView: UIView, UITextFieldDelegate {
     @IBOutlet weak var button: UIButton!
     private var onTextEnteredCallback: ((String)->Void)?
     private var onSearchClickedCallback:((String)->Void)?
-    private var allPokemonArray: [String] = ["apple"]
+    private var allPokemonArray: [String] = []
     private var matchesCallBack: (([String])->Void)?
     private let disposeBag = DisposeBag()
     
@@ -83,7 +83,7 @@ class SearchBarView: UIView, UITextFieldDelegate {
         self.allPokemonArray = allPokemonArray
         self.matchesCallBack = allMatchesCallBack
     }
-    func autoCompleteText( in textField: UITextField, using string: String, suggestionsArray: [String]) -> Bool {
+    private func autoCompleteText( in textField: UITextField, using string: String, suggestionsArray: [String]) -> Bool {
             if !string.isEmpty,
                 let selectedTextRange = textField.selectedTextRange,
                 selectedTextRange.end == textField.endOfDocument,

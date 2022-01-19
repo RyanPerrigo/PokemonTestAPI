@@ -15,11 +15,6 @@ class SinglePokemonDetailVC: UIViewController, ViewModelBased, StoryboardBased, 
 	
 	
 	var coordinator: MainCoordinator?
-	
-	
-	
-	
-	
 	var viewModel: SinglePokemonDetailVM?
 	private let disposeBag = DisposeBag()
 	
@@ -28,17 +23,17 @@ class SinglePokemonDetailVC: UIViewController, ViewModelBased, StoryboardBased, 
 	override func viewDidLoad() {
 		
 		viewModel?
-			.screenStateObservable()
-			.subscribe(onNext: { singlePokemonScreenState in
+			.viewStateObservable()
+			.subscribe(onNext: { viewState in
 				
-				switch singlePokemonScreenState {
+				switch viewState {
 				
 				case .loading:
 					print("loading")
 				case .success(holderModels: let holderModels):
 					self.dynamicCollectionView.pushImmutableList(holderModels: holderModels)
-				case .error:
-					print("ERROR DUDE")
+				case .error(let errorMessage):
+					print(errorMessage)
 				}
 			}
 			)
@@ -48,7 +43,7 @@ class SinglePokemonDetailVC: UIViewController, ViewModelBased, StoryboardBased, 
 			self.coordinator?.eventOccured(with: .pokeEvolutionOverviewClicked(theSpeciesUrl))
 		}
 		
-		viewModel?.populateViewModels()
+		
 	}
 	
 	

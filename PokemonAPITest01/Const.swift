@@ -8,7 +8,9 @@
 import Foundation
 
 struct Const {
-	static var getPokemonEnpoint: String = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=25"
+	static let getPokemonEnpoint: String = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=25"
 	
-	static var getPokemonBaseUrl: String = "https://pokeapi.co/api/v2/pokemon/"
+	static let getPokemonBaseUrl: String = "https://pokeapi.co/api/v2/pokemon/"
+    
+    static let defaultNoURL: String = "https://www.drupal.org/files/project-images/debug_tools_logo_0.png"
 }

@@ -104,7 +104,8 @@ class PokemonSearchVC: UIViewController, ViewModelBased, StoryboardBased, UITabl
                        onError: {error in
                 debugPrint(error)
             })
-			.disposed(by: disposeBag)
+			.disposed(
+                by: disposeBag)
 		
         dynamicCollectionView.setLastCellDisplayedListener {
             debugPrint("Bottom Detected!!!")
